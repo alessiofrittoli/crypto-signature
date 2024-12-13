@@ -10,8 +10,8 @@
 	"license": "MIT",
 	"keywords": [
 		"nodejs",
-		"npm",
-		"node_modules"
+		"signatures",
+		"digital-signatures"
 	],
 	"homepage": "https://github.com/alessiofrittoli/crypto-signature#readme",
 	"bugs": {
