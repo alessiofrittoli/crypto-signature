@@ -1,6 +1,6 @@
 # Crypto Signature 🔏
 
-Version 1.0.0
+Version 1.0.1
 
 ## Lightweight TypeScript Signatures library
 
@@ -14,6 +14,9 @@ This documentation provides an overview of the Digital Signature module and demo
 	- [Verifying a Digital Signature](#verifying-a-digital-signature)
 	- [Supported Algorithms](#supported-algorithms)
 	- [Error Handling](#error-handling)
+- [Development](#development)
+	- [ESLint](#eslint)
+	- [Jest](#jest)
 - [Contributing](#contributing)
 - [Security](#security)
 - [Credits](#made-with-)
@@ -125,34 +128,34 @@ try {
 
 The module supports the following algorithms:
 
-| Type         | JWK name  | Description                                                        |
-|--------------|-----------|--------------------------------------------------------------------|
-| `HMAC`       |           |                                                                    |
-|              | - `HS1`   | Signature generated/verified with `HMAC` key and `SHA-1`.          |
-|              | - `HS256` | Signature generated/verified with `HMAC` key and `SHA-256`.        |
-|              | - `HS384` | Signature generated/verified with `HMAC` key and `SHA-384`.        |
-|              | - `HS512` | Signature generated/verified with `HMAC` key and `SHA-512`.        |
-| `DSA`        |           |                                                                    |
-|              | - `DS1`   | Signature generated/verified with `DSA` keys and `SHA-1`.          |
-|              | - `DS256` | Signature generated/verified with `DSA` keys and `SHA-256`.        |
-|              | - `DS384` | Signature generated/verified with `DSA` keys and `SHA-384`.        |
-|              | - `DS512` | Signature generated/verified with `DSA` keys and `SHA-512`.        |
-| `EcDSA`      |           |                                                                    |
-|              | - `ES256` | Signature generated/verified with `EC` keys and `SHA-256`.         |
-|              | - `ES384` | Signature generated/verified with `EC` keys and `SHA-384`.         |
-|              | - `ES512` | Signature generated/verified with `EC` keys and `SHA-512`.         |
-| `EdDSA`      |           |                                                                    |
-|              | - `EdDSA` | Signature generated/verified with `ed448` keys.                    |
-|              | - `EdDSA` | Signature generated/verified with `ed25519` keys.                  |
-| `RSA`        |           |                                                                    |
-|              | - `RS1`   | Signature generated/verified with `RSA` keys and `SHA-1`.          |
-|              | - `RS256` | Signature generated/verified with `RSA` keys and `SHA-256`.        |
-|              | - `RS384` | Signature generated/verified with `RSA` keys and `SHA-384`.        |
-|              | - `RS512` | Signature generated/verified with `RSA` keys and `SHA-512`.        |
-| `RSASSA-PSS` |           |                                                                    |
-|              | - `PS256` | Signature generated/verified with `RSASSA-PSS` keys and `SHA-256`. |
-|              | - `PS384` | Signature generated/verified with `RSASSA-PSS` keys and `SHA-384`. |
-|              | - `PS512` | Signature generated/verified with `RSASSA-PSS` keys and `SHA-512`. |
+| Type         | JWK name | Description                                                        |
+|--------------|----------|--------------------------------------------------------------------|
+| `HMAC`       |          |                                                                    |
+|              | `HS1`    | Signature generated/verified with `HMAC` key and `SHA-1`.          |
+|              | `HS256`  | Signature generated/verified with `HMAC` key and `SHA-256`.        |
+|              | `HS384`  | Signature generated/verified with `HMAC` key and `SHA-384`.        |
+|              | `HS512`  | Signature generated/verified with `HMAC` key and `SHA-512`.        |
+| `DSA`        |          |                                                                    |
+|              | `DS1`    | Signature generated/verified with `DSA` keys and `SHA-1`.          |
+|              | `DS256`  | Signature generated/verified with `DSA` keys and `SHA-256`.        |
+|              | `DS384`  | Signature generated/verified with `DSA` keys and `SHA-384`.        |
+|              | `DS512`  | Signature generated/verified with `DSA` keys and `SHA-512`.        |
+| `EcDSA`      |          |                                                                    |
+|              | `ES256`  | Signature generated/verified with `EC` keys and `SHA-256`.         |
+|              | `ES384`  | Signature generated/verified with `EC` keys and `SHA-384`.         |
+|              | `ES512`  | Signature generated/verified with `EC` keys and `SHA-512`.         |
+| `EdDSA`      |          |                                                                    |
+|              | `EdDSA`  | Signature generated/verified with `ed448` keys.                    |
+|              | `EdDSA`  | Signature generated/verified with `ed25519` keys.                  |
+| `RSA`        |          |                                                                    |
+|              | `RS1`    | Signature generated/verified with `RSA` keys and `SHA-1`.          |
+|              | `RS256`  | Signature generated/verified with `RSA` keys and `SHA-256`.        |
+|              | `RS384`  | Signature generated/verified with `RSA` keys and `SHA-384`.        |
+|              | `RS512`  | Signature generated/verified with `RSA` keys and `SHA-512`.        |
+| `RSASSA-PSS` |          |                                                                    |
+|              | `PS256`  | Signature generated/verified with `RSASSA-PSS` keys and `SHA-256`. |
+|              | `PS384`  | Signature generated/verified with `RSASSA-PSS` keys and `SHA-384`. |
+|              | `PS512`  | Signature generated/verified with `RSASSA-PSS` keys and `SHA-512`. |
 
 #### Error Handling
 
@@ -168,7 +171,7 @@ This documentation covers the essential functionality of the module, allowing us
 
 ---
 
-<!-- ### Development
+### Development
 
 #### Install depenendencies
 
@@ -182,7 +185,7 @@ or using `pnpm`
 pnpm i
 ```
 
-#### Build your source code
+#### Build source code
 
 Run the following command to build code for distribution.
 
@@ -206,24 +209,19 @@ Run all the defined test suites by running the following:
 # Run tests and watch file changes.
 pnpm test
 
-# Run tests and watch file changes with jest-environment-jsdom.
-pnpm test:jsdom
-
 # Run tests in a CI environment.
 pnpm test:ci
-
-# Run tests in a CI environment with jest-environment-jsdom.
-pnpm test:ci:jsdom
 ```
 
 You can eventually run specific suits like so:
 
 ```bash
 pnpm test:jest
-pnpm test:jest:jsdom
+pnpm test:signature
+pnpm test:verify
 ```
 
---- -->
+---
 
 ### Contributing
 
