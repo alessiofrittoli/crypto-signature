@@ -62,11 +62,11 @@ The `Signature.sign()` method generates a signature for a given data input using
 
 ##### Parameters
 
-| Parameter   | Type                    | Default | Description             |
-|-------------|-------------------------|---------|-------------------------|
-| `data`      | `crypto.BinaryLike`     | -       | The data to be signed.  |
-| `key`       | `Sign.PrivateKey`       | -       | The private key used for signing. This can be a symmetric key, PEM private key or a key object. |
-| `algorithm` | `Sign.AlgorithmJwkName` | `HS256` | The JWK algorithm name. |
+| Parameter   | Type                      | Default | Description             |
+|-------------|---------------------------|---------|-------------------------|
+| `data`      | `CoerceToUint8ArrayInput` | -       | The data to be signed.  |
+| `key`       | `Sign.PrivateKey`         | -       | The private key used for signing. This can be a symmetric key, PEM private key or a key object. |
+| `algorithm` | `Sign.AlgorithmJwkName`   | `HS256` | The JWK algorithm name. |
 
 ##### Returns
 
@@ -95,12 +95,12 @@ The `Signature.isValid()` method verifies the integrity and authenticity of a di
 
 ##### Parameters
 
-| Parameter   | Type                    | Default | Description                        |
-|-------------|-------------------------|---------|------------------------------------|
-| `signature` | `Buffer`                | -       | The signature to verify.           |
-| `data`      | `crypto.BinaryLike`     | -       | The original data that was signed. |
-| `key`       | `Sign.PublicKey`        | -       | The public key used for verification. This can be a symmetric key, PEM public key or a key object. |
-| `algorithm` | `Sign.AlgorithmJwkName` | `HS256` | The JWK algorithm name. |
+| Parameter   | Type                      | Default | Description                        |
+|-------------|---------------------------|---------|------------------------------------|
+| `signature` | `CoerceToUint8ArrayInput` | -       | The signature to verify.           |
+| `data`      | `CoerceToUint8ArrayInput` | -       | The original data that was signed. |
+| `key`       | `Sign.PublicKey`          | -       | The public key used for verification. This can be a symmetric key, PEM public key or a key object. |
+| `algorithm` | `Sign.AlgorithmJwkName`   | `HS256` | The JWK algorithm name. |
 
 ##### Returns
 
