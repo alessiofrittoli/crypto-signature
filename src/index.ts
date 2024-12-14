@@ -1,6 +1,7 @@
 import crypto from 'crypto'
 import Hmac from '@alessiofrittoli/crypto-key/Hmac'
 import Algorithm from '@alessiofrittoli/crypto-algorithm'
+import { coerceToUint8Array, type CoerceToUint8ArrayInput } from '@alessiofrittoli/crypto-buffer/coercion'
 import type Sign from './types'
 
 
@@ -19,7 +20,7 @@ class Signature
 	 * @returns	The signature Buffer. Throws a new Exception on failure.
 	 */
 	static sign(
-		data		: crypto.BinaryLike,
+		data		: CoerceToUint8ArrayInput,
 		key			: Sign.PrivateKey,
 		algorithm	: Sign.AlgorithmJwkName = Signature.Algorithm,
 	): Buffer
@@ -31,7 +32,8 @@ class Signature
 			throw new Error( 'No Private Key has been provided.' )
 		}
 
-		const digest = Signature.jwkAlgToHash( algorithm ) || Signature.HashDigest
+		const digest		= Signature.jwkAlgToHash( algorithm ) || Signature.HashDigest
+		const dataBuffer	= coerceToUint8Array( data )
 
 		/** HMAC SHA signing algorithm */
 		if ( algorithm.startsWith( 'HS' ) ) {
@@ -40,18 +42,17 @@ class Signature
 			secret			= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
 			
 			return (
-				Hmac.digest( data, secret, digest )
+				Hmac.digest( dataBuffer, secret, digest )
 			)
 		}
 
 
 		if ( algorithm === 'EdDSA' ) {
 
-			let secret		= key as Sign.PrivateKey<'EdDSA'>
-			secret			= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
-			const _data		= typeof data !== 'string' ? data : Buffer.from( data )
+			let secret	= key as Sign.PrivateKey<'EdDSA'>
+			secret		= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
 			
-			return crypto.sign( null, _data, secret )
+			return crypto.sign( null, dataBuffer, secret )
 
 		}
 
@@ -61,7 +62,7 @@ class Signature
 		secret		= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
 		const Sign	= crypto.createSign( digest )
 
-		Sign.write( data )
+		Sign.write( dataBuffer )
 		Sign.end()
 
 		return Sign.sign( secret )
@@ -79,8 +80,8 @@ class Signature
 	 * @returns	`true` if signature is valid. Throws a new Exception on failure.
 	 */
 	static isValid(
-		signature	: Buffer,
-		data		: crypto.BinaryLike,
+		signature	: CoerceToUint8ArrayInput,
+		data		: CoerceToUint8ArrayInput,
 		key			: Sign.PublicKey,
 		algorithm	: Sign.AlgorithmJwkName = Signature.Algorithm,
 	): true
@@ -95,14 +96,16 @@ class Signature
 			throw new Error( 'No Private Key has been provided.' )
 		}
 
-		const digest = Signature.jwkAlgToHash( algorithm ) || Signature.HashDigest
+		const digest		= Signature.jwkAlgToHash( algorithm ) || Signature.HashDigest
+		const signBuffer	= coerceToUint8Array( signature )
+		const dataBuffer	= coerceToUint8Array( data )
 
 		/** HMAC SHA signing algorithm */
 		if ( algorithm.startsWith( 'HS' ) ) {
 
 			let secret		= key as Sign.PublicKey<'HMAC'>
 			secret			= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
-			const isValid	= Hmac.isValid( signature, data, secret, digest )
+			const isValid	= Hmac.isValid( Buffer.from( signBuffer ), dataBuffer, secret, digest )
 
 			if ( ! isValid ) {
 				throw new Error( 'Invalid signature.' )
@@ -116,8 +119,7 @@ class Signature
 
 			let secret		= key as Sign.PublicKey<'EdDSA'>
 			secret			= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
-			const _data		= typeof data !== 'string' ? data : Buffer.from( data )
-			const isValid	= crypto.verify( null, _data, secret, signature )
+			const isValid	= crypto.verify( null, dataBuffer, secret, signBuffer )
 
 			if ( ! isValid ) {
 				throw new Error( 'Invalid signature.' )
@@ -132,10 +134,10 @@ class Signature
 		secret			= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
 		const Verify	= crypto.createVerify( digest )
 
-		Verify.write( data )
+		Verify.write( dataBuffer )
 		Verify.end()
 
-		const isValid = Verify.verify( secret, signature )
+		const isValid = Verify.verify( secret, signBuffer )
 
 		if ( ! isValid ) {
 			throw new Error( 'Invalid signature.' )
