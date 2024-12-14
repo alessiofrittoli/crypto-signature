@@ -1,6 +1,17 @@
 import crypto from 'crypto'
 import Signature from '@/index'
 
+describe( 'Signature.isValid()', () => {
+	it( 'supports crypto KeyObject', () => {
+		const key = crypto.createSecretKey( Buffer.from( 'myscretkey' ) )
+		const signature = Signature.sign( 'My message', key, 'HS1' )
+
+		expect(
+			Signature.isValid( signature, 'My message', key, 'HS1' )
+		).toBe( true )
+	} )
+} )
+
 
 describe( 'Signature.isValid() - HMAC', () => {
 

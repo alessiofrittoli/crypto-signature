@@ -2,6 +2,17 @@ import crypto from 'crypto'
 import Signature from '@/index'
 
 
+describe( 'Signature.sign()', () => {
+	it( 'supports crypto KeyObject', () => {
+		const key = crypto.createSecretKey( Buffer.from( 'myscretkey' ) )
+		const signature = Signature.sign( 'My message', key, 'HS1' )
+
+		expect( signature.toString( 'base64url' ) )
+			.toBe( 'MI446pz8PBXelRlxq7Ihw2AraVU' )
+	} )
+} )
+
+
 describe( 'Signature.sign() - HMAC', () => {
 
 	it( 'creates a signature with HS1', () => {
