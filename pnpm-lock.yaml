@@ -11,6 +11,9 @@ importers:
       '@alessiofrittoli/crypto-algorithm':
         specifier: ^1.2.0
         version: 1.2.0
+      '@alessiofrittoli/crypto-buffer':
+        specifier: ^2.0.1
+        version: 2.0.1
       '@alessiofrittoli/crypto-key':
         specifier: ^1.0.0
         version: 1.0.0
