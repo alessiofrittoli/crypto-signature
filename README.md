@@ -1,6 +1,6 @@
 # Crypto Signature 🔏
 
-Version 1.2.0
+Version 1.2.1
 
 ## Lightweight TypeScript Signatures library
 
@@ -199,10 +199,10 @@ try {
 	Signature.isValid( 'invalid signature', 'Data', 'myscretkey' )
 } catch ( error ) {
 	console.log( error )
-	
+	// safe type guard the `error` variable.
 	if ( Exception.isException<string, ErrorCode>( error ) ) {
 		// ... do somethign with `error.code`
-		if ( ErrorCode.INVALID_SIGN ) {
+		if ( error.code === ErrorCode.INVALID_SIGN ) {
 			// ...
 		}
 	}
