@@ -1,7 +1,11 @@
 import crypto from 'crypto'
+
 import Hmac from '@alessiofrittoli/crypto-key/Hmac'
 import Algorithm from '@alessiofrittoli/crypto-algorithm'
+import Exception from '@alessiofrittoli/exception'
 import { coerceToUint8Array, type CoerceToUint8ArrayInput } from '@alessiofrittoli/crypto-buffer/coercion'
+
+import { ErrorCode } from './error'
 import type Sign from './types'
 
 
@@ -26,46 +30,59 @@ class Signature
 	): Buffer
 	{
 		if ( ! data ) {
-			throw new Error( 'No data to sign has been provided.' )
+			throw new Exception( 'No data to sign has been provided.', {
+				code: ErrorCode.EMPTY_VALUE,
+			} )
 		}
 		if ( ! key ) {
-			throw new Error( 'No Private Key has been provided.' )
+			throw new Exception( 'No Private Key has been provided.', {
+				code: ErrorCode.NO_PRIVATEKEY,
+			} )
 		}
 
 		const digest		= Signature.jwkAlgToHash( algorithm ) || Signature.HashDigest
 		const dataBuffer	= coerceToUint8Array( data )
 
-		/** HMAC SHA signing algorithm */
-		if ( algorithm.startsWith( 'HS' ) ) {
+		try {
 
-			let secret		= key as Sign.PrivateKey<'HMAC'>
-			secret			= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
-			
-			return (
-				Hmac.digest( dataBuffer, secret, digest )
-			)
-		}
+			/** HMAC SHA signing algorithm */
+			if ( algorithm.startsWith( 'HS' ) ) {
+
+				let secret		= key as Sign.PrivateKey<'HMAC'>
+				secret			= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
+				
+				return (
+					Hmac.digest( dataBuffer, secret, digest )
+				)
+			}
 
 
-		if ( algorithm === 'EdDSA' ) {
+			if ( algorithm === 'EdDSA' ) {
 
-			let secret	= key as Sign.PrivateKey<'EdDSA'>
+				let secret	= key as Sign.PrivateKey<'EdDSA'>
+				secret		= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
+				
+				return crypto.sign( null, dataBuffer, secret )
+
+			}
+
+
+			/** RSASSA/RSASSA-PSS/ECDSA/DSA SHA signing algorithm */
+			let secret	= key as Sign.PrivateKey<'RSA-PSS' | 'RSASSA-PKCS1-v1_5' | 'ECDSA' | 'DSA'>
 			secret		= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
+			const Sign	= crypto.createSign( digest )
+
+			Sign.write( dataBuffer )
+			Sign.end()
+
+			return Sign.sign( secret )
 			
-			return crypto.sign( null, dataBuffer, secret )
-
+		} catch ( error ) {
+			throw new Exception( 'An error occured while creating the signature.', {
+				code	: ErrorCode.UNKNOWN,
+				cause	: error,
+			} )
 		}
-
-
-		/** RSASSA/RSASSA-PSS/ECDSA/DSA SHA signing algorithm */
-		let secret	= key as Sign.PrivateKey<'RSA-PSS' | 'RSASSA-PKCS1-v1_5' | 'ECDSA' | 'DSA'>
-		secret		= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
-		const Sign	= crypto.createSign( digest )
-
-		Sign.write( dataBuffer )
-		Sign.end()
-
-		return Sign.sign( secret )
 
 	}
 
@@ -87,63 +104,85 @@ class Signature
 	): true
 	{
 		if ( ! signature ) {
-			throw new Error( 'No signature provided.' )
+			throw new Exception( 'No signature provided.', {
+				code: ErrorCode.NO_SIGN,
+			} )
 		}
 		if ( ! data ) {
-			throw new Error( 'The signed data is needed for integrity controls.' )
+			throw new Exception( 'The signed data is needed for integrity controls.', {
+				code: ErrorCode.EMPTY_VALUE,
+			} )
 		}
 		if ( ! key ) {
-			throw new Error( 'No Private Key has been provided.' )
+			throw new Exception( 'No Public Key has been provided.', {
+				code: ErrorCode.NO_PUBLICKEY,
+			} )
 		}
 
 		const digest		= Signature.jwkAlgToHash( algorithm ) || Signature.HashDigest
 		const signBuffer	= coerceToUint8Array( signature )
 		const dataBuffer	= coerceToUint8Array( data )
 
-		/** HMAC SHA signing algorithm */
-		if ( algorithm.startsWith( 'HS' ) ) {
+		try {
+			/** HMAC SHA signing algorithm */
+			if ( algorithm.startsWith( 'HS' ) ) {
 
-			let secret		= key as Sign.PublicKey<'HMAC'>
+				let secret		= key as Sign.PublicKey<'HMAC'>
+				secret			= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
+				const isValid	= Hmac.isValid( Buffer.from( signBuffer ), dataBuffer, secret, digest )
+
+				if ( ! isValid ) {
+					throw new Exception( 'Invalid signature.', {
+						code: ErrorCode.INVALID_SIGN,
+					} )
+				}
+
+				return true
+
+			}
+
+			if ( algorithm === 'EdDSA' ) {
+
+				let secret		= key as Sign.PublicKey<'EdDSA'>
+				secret			= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
+				const isValid	= crypto.verify( null, dataBuffer, secret, signBuffer )
+
+				if ( ! isValid ) {
+					throw new Exception( 'Invalid signature.', {
+						code: ErrorCode.INVALID_SIGN,
+					} )
+				}
+		
+				return true
+
+			}
+
+			/** RSASSA/RSASSA-PSS/ECDSA/DSA SHA signing algorithm */
+			let secret		= key as Sign.PublicKey<'RSA-PSS' | 'RSASSA-PKCS1-v1_5' | 'ECDSA' | 'DSA'>
 			secret			= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
-			const isValid	= Hmac.isValid( Buffer.from( signBuffer ), dataBuffer, secret, digest )
+			const Verify	= crypto.createVerify( digest )
+
+			Verify.write( dataBuffer )
+			Verify.end()
+
+			const isValid = Verify.verify( secret, signBuffer )
 
 			if ( ! isValid ) {
-				throw new Error( 'Invalid signature.' )
+				throw new Exception( 'Invalid signature.', {
+					code: ErrorCode.INVALID_SIGN,
+				} )
 			}
 
 			return true
-
-		}
-
-		if ( algorithm === 'EdDSA' ) {
-
-			let secret		= key as Sign.PublicKey<'EdDSA'>
-			secret			= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
-			const isValid	= crypto.verify( null, dataBuffer, secret, signBuffer )
-
-			if ( ! isValid ) {
-				throw new Error( 'Invalid signature.' )
+		} catch ( error ) {
+			if ( Exception.isException( error ) ) {
+				throw error
 			}
-	
-			return true
-
+			throw new Exception( 'An error occured while verifying the signature.', {
+				code	: ErrorCode.UNKNOWN,
+				cause	: error,
+			} )
 		}
-
-		/** RSASSA/RSASSA-PSS/ECDSA/DSA SHA signing algorithm */
-		let secret		= key as Sign.PublicKey<'RSA-PSS' | 'RSASSA-PKCS1-v1_5' | 'ECDSA' | 'DSA'>
-		secret			= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
-		const Verify	= crypto.createVerify( digest )
-
-		Verify.write( dataBuffer )
-		Verify.end()
-
-		const isValid = Verify.verify( secret, signBuffer )
-
-		if ( ! isValid ) {
-			throw new Error( 'Invalid signature.' )
-		}
-
-		return true
 
 	}
 

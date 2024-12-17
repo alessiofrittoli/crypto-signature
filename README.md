@@ -157,13 +157,56 @@ The module supports the following algorithms:
 |              | `PS384`  | Signature generated/verified with `RSASSA-PSS` keys and `SHA-384`. |
 |              | `PS512`  | Signature generated/verified with `RSASSA-PSS` keys and `SHA-512`. |
 
-#### Error Handling
+---
 
-The methods throw exceptions in the following cases:
+### Error handling
 
-- Missing or invalid parameters (e.g., no data, key, or signature provided).
-- Invalid or unsupported algorithm.
-- Signature verification failure.
+This module throws a new `Exception` when an error occures providing an error code that will help in error handling.
+
+The `ErrorCode` enumerator can be used to handle different errors with ease.
+
+<details>
+
+<summary>`ErrorCode` enum</summary>
+
+| Constant              | Description                                              |
+|-----------------------|----------------------------------------------------------|
+| `UNKNOWN`             | Thrown when: |
+|                       | - `Signature.sign()` encounters an unexpected error while creating a signature (mostly due to unsupported routine). The original thrown error is being reported in the `Exception.cause` property. |
+|                       | - `Signature.isValid()` encounters an unexpected error while verifying a signature (mostly due to unsupported routine). The original thrown error is being reported in the `Exception.cause` property. |
+| `EMPTY_VALUE`         | Thrown when: |
+|                       | `Signature.sign()` has no `data` to sign. |
+|                       | `Signature.isValid()` has no `data` to verify. |
+| `INVALID_SIGN`        | Thrown when `Signature.isValid()` encounter an invalid signature (altered data, altered signature, wrong PublicKey). |
+| `NO_SIGN`             | Thrown when `Signature.isValid()` has no `signature` to verify. |
+| `NO_PRIVATEKEY`       | Thrown when `Signature.sign()` has no Private Key to sign with. |
+| `NO_PUBLICKEY`        | Thrown when `Signature.isValid()` has no Public Key to verify the signature with. |
+
+</details>
+
+---
+
+<details>
+
+<summary>Example usage</summary>
+
+```ts
+import Exception from '@alessiofrittoli/exception'
+import Signature from '@alessiofrittoli/crypto-jwt'
+import { ErrorCode } from '@alessiofrittoli/crypto-jwt/error'
+
+try {
+	Signature.isValid( 'invalid signature', 'Data', 'myscretkey' )
+} catch ( error ) {
+	expect( error ).toBeInstanceOf( Exception )
+	
+	if ( Exception.isException<string, ErrorCode>( error ) ) {
+		expect( error.code ).toBe( ErrorCode.INVALID_SIGN )
+	}
+}
+```
+
+</details>
 
 ---
 

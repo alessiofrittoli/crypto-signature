@@ -17,6 +17,9 @@ importers:
       '@alessiofrittoli/crypto-key':
         specifier: ^1.0.0
         version: 1.0.0
+      '@alessiofrittoli/exception':
+        specifier: ^1.0.0
+        version: 1.0.0
     devDependencies:
       '@eslint/js':
         specifier: ^9.17.0
@@ -71,6 +74,9 @@ packages:
 
   '@alessiofrittoli/crypto-key@1.0.0':
     resolution: {integrity: sha512-82N4Ksby0BAXCWod2uXDiunQ9OVgSzGXXCBc9NgrzX386g+DSKIcFekHf6JPgXJv5TbrvpbPXmolWJFobY0AjQ==}
+
+  '@alessiofrittoli/exception@1.0.0':
+    resolution: {integrity: sha512-G6KjoID5eiD7t8BOC8YzHkBupumnVoWrwErDo0YRQYYoknk7I95w2Nktu/Rn8xc7Si01GMH4SIY8i2e98NfxwQ==}
 
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
@@ -2262,6 +2268,8 @@ snapshots:
     dependencies:
       '@alessiofrittoli/crypto-algorithm': 1.2.0
       '@alessiofrittoli/crypto-buffer': 2.0.1
+
+  '@alessiofrittoli/exception@1.0.0': {}
 
   '@ampproject/remapping@2.3.0':
     dependencies:
