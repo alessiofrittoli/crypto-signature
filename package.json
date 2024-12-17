@@ -33,6 +33,11 @@
 			"import": "./dist/index.mjs",
 			"require": "./dist/index.js"
 		},
+		"./error": {
+			"types": "./dist/error.d.ts",
+			"import": "./dist/error.mjs",
+			"require": "./dist/error.js"
+		},
 		"./types": {
 			"types": "./dist/types.d.ts",
 			"import": "./dist/types.mjs",
@@ -49,7 +54,8 @@
 		"test:ci:jsdom": "JSDOM=true pnpm test:ci",
 		"test:jest": "pnpm test jest.test.ts",
 		"test:signature": "pnpm test signature.test.ts",
-		"test:verify": "pnpm test verify.test.ts"
+		"test:verify": "pnpm test verify.test.ts",
+		"test:exception": "pnpm test exception.test.ts"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.17.0",
@@ -70,6 +76,7 @@
 	"dependencies": {
 		"@alessiofrittoli/crypto-algorithm": "^1.2.0",
 		"@alessiofrittoli/crypto-buffer": "^2.0.1",
-		"@alessiofrittoli/crypto-key": "^1.0.0"
+		"@alessiofrittoli/crypto-key": "^1.0.0",
+		"@alessiofrittoli/exception": "^1.0.0"
 	}
 }
