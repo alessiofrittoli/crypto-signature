@@ -10,6 +10,29 @@ describe( 'Signature.sign()', () => {
 		expect( signature.toString( 'base64url' ) )
 			.toBe( 'MI446pz8PBXelRlxq7Ihw2AraVU' )
 	} )
+
+	it( 'supports CryptoKey', async () => {
+		const bytes		= 256
+		const keypair	= crypto.generateKeyPairSync( 'rsa', {
+			modulusLength		: bytes * 8,
+			publicKeyEncoding	: { type: 'spki', format: 'der' },
+			privateKeyEncoding	: { type: 'pkcs8', format: 'der' },
+		} )
+		
+		const privateKey = await (
+			crypto.subtle
+				.importKey(
+					'pkcs8', keypair.privateKey,
+					{ name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+					true, [ 'sign' ]
+				)
+		)
+
+		const signature = Signature.sign( 'My message', privateKey, 'RS256' )
+		
+		expect( signature.toString( 'base64url' ) )
+			.toBeTruthy()
+	} )
 } )
 
 

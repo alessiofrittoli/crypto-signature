@@ -10,6 +10,39 @@ describe( 'Signature.isValid()', () => {
 			Signature.isValid( signature, 'My message', key, 'HS1' )
 		).toBe( true )
 	} )
+
+	it( 'supports CryptoKey', async () => {
+		const bytes		= 256
+		const keypair	= crypto.generateKeyPairSync( 'rsa', {
+			modulusLength		: bytes * 8,
+			publicKeyEncoding	: { type: 'spki', format: 'der' },
+			privateKeyEncoding	: { type: 'pkcs8', format: 'der' },
+		} )
+		
+		const privateKey = await (
+			crypto.subtle
+				.importKey(
+					'pkcs8', keypair.privateKey,
+					{ name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+					true, [ 'sign' ]
+				)
+		)
+
+		const publicKey = await (
+			crypto.subtle
+				.importKey(
+					'spki', keypair.publicKey,
+					{ name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+					true, [ 'verify' ]
+				)
+		)
+
+		const signature = Signature.sign( 'My message', privateKey, 'RS256' )
+		
+		expect(
+			Signature.isValid( signature, 'My message', publicKey, 'RS256' )
+		).toBe( true )
+	} )
 } )
 
 
