@@ -1,6 +1,6 @@
 # Crypto Signature 🔏
 
-Version 1.1.0
+Version 1.2.0
 
 ## Lightweight TypeScript Signatures library
 
@@ -198,10 +198,13 @@ import { ErrorCode } from '@alessiofrittoli/crypto-jwt/error'
 try {
 	Signature.isValid( 'invalid signature', 'Data', 'myscretkey' )
 } catch ( error ) {
-	expect( error ).toBeInstanceOf( Exception )
+	console.log( error )
 	
 	if ( Exception.isException<string, ErrorCode>( error ) ) {
-		expect( error.code ).toBe( ErrorCode.INVALID_SIGN )
+		// ... do somethign with `error.code`
+		if ( ErrorCode.INVALID_SIGN ) {
+			// ...
+		}
 	}
 }
 ```
