@@ -1,9 +1,14 @@
-export enum ErrorCode
+import Exception from '@alessiofrittoli/exception/code'
+
+export enum Signature
 {
-	UNKNOWN				= 'ERR:UNKNOWN',
-	EMPTY_VALUE			= 'ERR:EMPTYVALUE',
-	INVALID_SIGN		= 'ERR:INVALIDSIGN',
-	NO_SIGN				= 'ERR:NOSIGN',
-	NO_PRIVATEKEY		= 'ERR:NOPRIVATEKEY',
-	NO_PUBLICKEY		= 'ERR:NOPUBLICKEY',
+	INVALID_SIGN	= 'ERR:INVALIDSIGN',
+	NO_SIGN			= 'ERR:NOSIGN',
+	NO_PRIVATEKEY	= 'ERR:NOPRIVATEKEY',
+	NO_PUBLICKEY	= 'ERR:NOPUBLICKEY',
 }
+
+const ErrorCode	= { Exception, Signature }
+type ErrorCode	= MergedEnumValue<typeof ErrorCode>
+
+export default ErrorCode

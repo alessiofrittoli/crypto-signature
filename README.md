@@ -192,8 +192,8 @@ The `ErrorCode` enumerator can be used to handle different errors with ease.
 
 ```ts
 import Exception from '@alessiofrittoli/exception'
-import Signature from '@alessiofrittoli/crypto-jwt'
-import { ErrorCode } from '@alessiofrittoli/crypto-jwt/error'
+import Signature from '@alessiofrittoli/crypto-signature'
+import ErrorCode from '@alessiofrittoli/crypto-signature/error'
 
 try {
 	Signature.isValid( 'invalid signature', 'Data', 'myscretkey' )
@@ -202,7 +202,7 @@ try {
 	// safe type guard the `error` variable.
 	if ( Exception.isException<string, ErrorCode>( error ) ) {
 		// ... do somethign with `error.code`
-		if ( error.code === ErrorCode.INVALID_SIGN ) {
+		if ( error.code === ErrorCode.Signature.INVALID_SIGN ) {
 			// ...
 		}
 	}

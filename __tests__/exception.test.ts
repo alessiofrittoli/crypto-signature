@@ -1,7 +1,7 @@
 import Exception from '@alessiofrittoli/exception'
 
 import Signature from '@/index'
-import { ErrorCode } from '@/error'
+import ErrorCode from '@/error'
 
 
 describe( 'Signature.sign()', () => {
@@ -12,7 +12,7 @@ describe( 'Signature.sign()', () => {
 		} catch ( error ) {
 			expect( error ).toBeInstanceOf( Exception )
 			if ( Exception.isException<string, ErrorCode>( error ) ) {
-				expect( error.code ).toBe( ErrorCode.EMPTY_VALUE )
+				expect( error.code ).toBe( ErrorCode.Exception.EMPTY_VALUE )
 			}
 		}
 	} )
@@ -26,7 +26,7 @@ describe( 'Signature.sign()', () => {
 			expect( error ).toBeInstanceOf( Exception )
 
 			if ( Exception.isException<string, ErrorCode>( error ) ) {
-				expect( error.code ).toBe( ErrorCode.UNKNOWN )
+				expect( error.code ).toBe( ErrorCode.Exception.UNKNOWN )
 				expect( 'cause' in error ).toBe( true )
 				const cause = error.cause as Error
 				expect( cause.name ).toBe( 'Error' )
@@ -51,7 +51,7 @@ describe( 'Signature.isValid()', () => {
 			expect( error ).toBeInstanceOf( Exception )
 			
 			if ( Exception.isException<string, ErrorCode>( error ) ) {
-				expect( error.code ).toBe( ErrorCode.NO_SIGN )
+				expect( error.code ).toBe( ErrorCode.Signature.NO_SIGN )
 			}
 		}
 	} )
@@ -64,7 +64,7 @@ describe( 'Signature.isValid()', () => {
 			expect( error ).toBeInstanceOf( Exception )
 			
 			if ( Exception.isException<string, ErrorCode>( error ) ) {
-				expect( error.code ).toBe( ErrorCode.EMPTY_VALUE )
+				expect( error.code ).toBe( ErrorCode.Exception.EMPTY_VALUE )
 			}
 		}
 	} )
@@ -77,7 +77,7 @@ describe( 'Signature.isValid()', () => {
 			expect( error ).toBeInstanceOf( Exception )
 			
 			if ( Exception.isException<string, ErrorCode>( error ) ) {
-				expect( error.code ).toBe( ErrorCode.NO_PUBLICKEY )
+				expect( error.code ).toBe( ErrorCode.Signature.NO_PUBLICKEY )
 			}
 		}
 	} )
@@ -90,7 +90,7 @@ describe( 'Signature.isValid()', () => {
 			expect( error ).toBeInstanceOf( Exception )
 			
 			if ( Exception.isException<string, ErrorCode>( error ) ) {
-				expect( error.code ).toBe( ErrorCode.INVALID_SIGN )
+				expect( error.code ).toBe( ErrorCode.Signature.INVALID_SIGN )
 			}
 		}
 	} )
@@ -103,7 +103,7 @@ describe( 'Signature.isValid()', () => {
 			expect( error ).toBeInstanceOf( Exception )
 			
 			if ( Exception.isException<string, ErrorCode>( error ) ) {
-				expect( error.code ).toBe( ErrorCode.INVALID_SIGN )
+				expect( error.code ).toBe( ErrorCode.Signature.INVALID_SIGN )
 			}
 		}
 	} )
@@ -116,7 +116,7 @@ describe( 'Signature.isValid()', () => {
 			expect( error ).toBeInstanceOf( Exception )
 			
 			if ( Exception.isException<string, ErrorCode>( error ) ) {
-				expect( error.code ).toBe( ErrorCode.INVALID_SIGN )
+				expect( error.code ).toBe( ErrorCode.Signature.INVALID_SIGN )
 			}
 		}
 	} )
@@ -130,7 +130,7 @@ describe( 'Signature.isValid()', () => {
 			expect( error ).toBeInstanceOf( Exception )
 
 			if ( Exception.isException<string, ErrorCode>( error ) ) {
-				expect( error.code ).toBe( ErrorCode.UNKNOWN )
+				expect( error.code ).toBe( ErrorCode.Exception.UNKNOWN )
 				expect( 'cause' in error ).toBe( true )
 				const cause = error.cause as Error
 				expect( cause.name ).toBe( 'Error' )
