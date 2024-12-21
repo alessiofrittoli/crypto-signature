@@ -1,6 +1,6 @@
 import Exception from '@alessiofrittoli/exception/code'
 
-export enum Signature
+enum Signature
 {
 	INVALID_SIGN	= 'ERR:INVALIDSIGN',
 	NO_SIGN			= 'ERR:NOSIGN',
