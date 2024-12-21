@@ -82,6 +82,6 @@
 		"@alessiofrittoli/crypto-algorithm": "^1.2.0",
 		"@alessiofrittoli/crypto-buffer": "^2.0.1",
 		"@alessiofrittoli/crypto-key": "^1.0.0",
-		"@alessiofrittoli/exception": "^1.0.0"
+		"@alessiofrittoli/exception": "^1.2.0"
 	}
 }
