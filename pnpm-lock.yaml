@@ -20,6 +20,9 @@ importers:
       '@alessiofrittoli/exception':
         specifier: ^1.2.0
         version: 1.2.0
+      '@alessiofrittoli/type-utils':
+        specifier: ^1.2.0
+        version: 1.2.0
     devDependencies:
       '@eslint/js':
         specifier: ^9.17.0
@@ -83,6 +86,9 @@ packages:
 
   '@alessiofrittoli/exception@1.2.0':
     resolution: {integrity: sha512-/oHQqWbzEXTZO6P3dJDf7JAqK0tgjfMdTZugQ/gB8mL9hqK0j1sjbJVWnFYfxbyr9tviI5rukofXXBJlvupnVQ==}
+
+  '@alessiofrittoli/type-utils@1.2.0':
+    resolution: {integrity: sha512-BWWUMnNLHFAV4zaAJs6z0jT4LDozJl4zEAewC2OmRGrUJ+jnaf+5h1D8pV1bQvMQWvgSVCKeK/wql5Jv4w3K4w==}
 
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
@@ -2435,6 +2441,8 @@ snapshots:
       '@alessiofrittoli/crypto-buffer': 2.0.1
 
   '@alessiofrittoli/exception@1.2.0': {}
+
+  '@alessiofrittoli/type-utils@1.2.0': {}
 
   '@ampproject/remapping@2.3.0':
     dependencies:

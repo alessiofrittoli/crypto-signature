@@ -5,7 +5,7 @@ import Algorithm from '@alessiofrittoli/crypto-algorithm'
 import Exception from '@alessiofrittoli/exception'
 import { coerceToUint8Array, type CoerceToUint8ArrayInput } from '@alessiofrittoli/crypto-buffer/coercion'
 
-import { ErrorCode } from './error'
+import ErrorCode from './error'
 import type Sign from './types'
 
 
@@ -31,12 +31,12 @@ class Signature
 	{
 		if ( ! data ) {
 			throw new Exception( 'No data to sign has been provided.', {
-				code: ErrorCode.EMPTY_VALUE,
+				code: ErrorCode.Exception.EMPTY_VALUE,
 			} )
 		}
 		if ( ! key ) {
 			throw new Exception( 'No Private Key has been provided.', {
-				code: ErrorCode.NO_PRIVATEKEY,
+				code: ErrorCode.Signature.NO_PRIVATEKEY,
 			} )
 		}
 
@@ -79,7 +79,7 @@ class Signature
 			
 		} catch ( error ) {
 			throw new Exception( 'An error occured while creating the signature.', {
-				code	: ErrorCode.UNKNOWN,
+				code	: ErrorCode.Exception.UNKNOWN,
 				cause	: error,
 			} )
 		}
@@ -105,17 +105,17 @@ class Signature
 	{
 		if ( ! signature ) {
 			throw new Exception( 'No signature provided.', {
-				code: ErrorCode.NO_SIGN,
+				code: ErrorCode.Signature.NO_SIGN,
 			} )
 		}
 		if ( ! data ) {
 			throw new Exception( 'The signed data is needed for integrity controls.', {
-				code: ErrorCode.EMPTY_VALUE,
+				code: ErrorCode.Exception.EMPTY_VALUE,
 			} )
 		}
 		if ( ! key ) {
 			throw new Exception( 'No Public Key has been provided.', {
-				code: ErrorCode.NO_PUBLICKEY,
+				code: ErrorCode.Signature.NO_PUBLICKEY,
 			} )
 		}
 
@@ -133,7 +133,7 @@ class Signature
 
 				if ( ! isValid ) {
 					throw new Exception( 'Invalid signature.', {
-						code: ErrorCode.INVALID_SIGN,
+						code: ErrorCode.Signature.INVALID_SIGN,
 					} )
 				}
 
@@ -149,7 +149,7 @@ class Signature
 
 				if ( ! isValid ) {
 					throw new Exception( 'Invalid signature.', {
-						code: ErrorCode.INVALID_SIGN,
+						code: ErrorCode.Signature.INVALID_SIGN,
 					} )
 				}
 		
@@ -169,7 +169,7 @@ class Signature
 
 			if ( ! isValid ) {
 				throw new Exception( 'Invalid signature.', {
-					code: ErrorCode.INVALID_SIGN,
+					code: ErrorCode.Signature.INVALID_SIGN,
 				} )
 			}
 
@@ -179,7 +179,7 @@ class Signature
 				throw error
 			}
 			throw new Exception( 'An error occured while verifying the signature.', {
-				code	: ErrorCode.UNKNOWN,
+				code	: ErrorCode.Exception.UNKNOWN,
 				cause	: error,
 			} )
 		}
