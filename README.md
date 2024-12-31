@@ -2,6 +2,8 @@
 
 Version 1.3.1
 
+[![Coverage Status](https://coveralls.io/repos/github/alessiofrittoli/crypto-signature/badge.svg)](https://coveralls.io/github/alessiofrittoli/crypto-signature) [![Dependencies](https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fcrypto-signature)](https://libraries.io/npm/%40alessiofrittoli%2Fcrypto-signature)
+
 ## Lightweight TypeScript Signatures library
 
 This documentation provides an overview of the Digital Signature module and demonstrates how to use its methods for creating and verifying digital signatures.
@@ -262,9 +264,7 @@ pnpm test:ci
 You can eventually run specific suits like so:
 
 ```bash
-pnpm test:jest
 pnpm test:signature
-pnpm test:verify
 ```
 
 Run tests with coverage.
