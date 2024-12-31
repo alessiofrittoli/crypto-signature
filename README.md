@@ -1,6 +1,6 @@
 # Crypto Signature 🔏
 
-Version 1.3.1
+Version 2.0.0
 
 [![Coverage Status](https://coveralls.io/repos/github/alessiofrittoli/crypto-signature/badge.svg)](https://coveralls.io/github/alessiofrittoli/crypto-signature) [![Dependencies](https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fcrypto-signature)](https://libraries.io/npm/%40alessiofrittoli%2Fcrypto-signature)
 
