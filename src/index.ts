@@ -1,15 +1,15 @@
 import crypto from 'crypto'
 
-import Hmac from '@alessiofrittoli/crypto-key/Hmac'
-import Algorithm from '@alessiofrittoli/crypto-algorithm'
-import Exception from '@alessiofrittoli/exception'
+import { Hmac } from '@alessiofrittoli/crypto-key/Hmac'
+import { Algorithm } from '@alessiofrittoli/crypto-algorithm'
+import { Exception } from '@alessiofrittoli/exception'
 import { coerceToUint8Array, type CoerceToUint8ArrayInput } from '@alessiofrittoli/crypto-buffer/coercion'
 
-import ErrorCode from './error'
-import type Sign from './types'
+import { ErrorCode } from './error'
+import type { Sign } from './types'
 
 
-class Signature
+export class Signature
 {
 	private static Algorithm: Sign.AlgorithmJwkName = 'HS256'
 	private static HashDigest: Sign.Hash = 'SHA-256'
@@ -40,16 +40,16 @@ class Signature
 			} )
 		}
 
-		const digest		= Signature.jwkAlgToHash( algorithm ) || Signature.HashDigest
-		const dataBuffer	= coerceToUint8Array( data )
+		const digest	= Signature.jwkAlgToHash( algorithm ) || Signature.HashDigest
+		const dataBuffer= coerceToUint8Array( data )
 
 		try {
 
 			/** HMAC SHA signing algorithm */
 			if ( algorithm.startsWith( 'HS' ) ) {
 
-				let secret		= key as Sign.PrivateKey<'HMAC'>
-				secret			= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
+				let secret	= key as Sign.PrivateKey<'HMAC'>
+				secret		= secret instanceof CryptoKey ? crypto.KeyObject.from( secret ) : secret
 				
 				return (
 					Hmac.digest( dataBuffer, secret, digest )
@@ -198,6 +198,3 @@ class Signature
 		return Algorithm.by( { jwkAlg } )?.hash
 	}
 }
-
-
-export default Signature

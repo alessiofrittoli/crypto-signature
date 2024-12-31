@@ -48,10 +48,10 @@ pnpm i @alessiofrittoli/crypto-signature
 ##### Importing the Module
 
 ```ts
-import Signature from '@alessiofrittoli/crypto-signature'
+import { Signature } from '@alessiofrittoli/crypto-signature'
 import type { Sign } from '@alessiofrittoli/crypto-signature'
 // or
-import type Sign from '@alessiofrittoli/crypto-signature/types'
+import type { Sign } from '@alessiofrittoli/crypto-signature/types'
 ```
 
 ---
@@ -191,9 +191,9 @@ The `ErrorCode` enumerator can be used to handle different errors with ease.
 <summary>Example usage</summary>
 
 ```ts
-import Exception from '@alessiofrittoli/exception'
-import Signature from '@alessiofrittoli/crypto-signature'
-import ErrorCode from '@alessiofrittoli/crypto-signature/error'
+import { Exception } from '@alessiofrittoli/exception'
+import { Signature } from '@alessiofrittoli/crypto-signature'
+import { ErrorCode } from '@alessiofrittoli/crypto-signature/error'
 
 try {
 	Signature.isValid( 'invalid signature', 'Data', 'myscretkey' )

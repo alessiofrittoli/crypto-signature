@@ -1,7 +1,7 @@
 import type crypto from 'crypto'
-import type Algo from '@alessiofrittoli/crypto-algorithm/types'
+import type { Algo } from '@alessiofrittoli/crypto-algorithm/types'
 
-namespace Sign
+export namespace Sign
 {
 	/**
 	 * Signature algorithm parameter.
@@ -34,6 +34,3 @@ namespace Sign
 			: ( crypto.KeyLike | crypto.VerifyKeyObjectInput | crypto.VerifyPublicKeyInput | crypto.VerifyJsonWebKeyInput | CryptoKey )
 	)
 }
-
-
-export default Sign

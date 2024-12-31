@@ -1,4 +1,4 @@
-import Exception from '@alessiofrittoli/exception/code'
+import { ErrorCode as Exception } from '@alessiofrittoli/exception/code'
 
 export enum Signature
 {
@@ -8,7 +8,5 @@ export enum Signature
 	NO_PUBLICKEY	= 'ERR:NOPUBLICKEY',
 }
 
-const ErrorCode	= { Exception, Signature }
-type ErrorCode	= MergedEnumValue<typeof ErrorCode>
-
-export default ErrorCode
+export const ErrorCode = { Exception, Signature }
+export type ErrorCode	= MergedEnumValue<typeof ErrorCode>
