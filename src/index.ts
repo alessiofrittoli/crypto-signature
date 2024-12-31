@@ -40,8 +40,15 @@ export class Signature
 			} )
 		}
 
-		const digest	= Signature.jwkAlgToHash( algorithm ) || Signature.HashDigest
+		const digest	= Signature.jwkAlgToHash( algorithm )
 		const dataBuffer= coerceToUint8Array( data )
+
+		if ( ! digest ) {
+			// if an hash digest couldn't be found, means that an invalid `jwk` algorithm has been provided.
+			throw new Exception( 'Invalid JWK Algorithm name.', {
+				code: ErrorCode.Signature.INVALID_JWKNAME,
+			} )
+		}
 
 		try {
 
@@ -119,7 +126,15 @@ export class Signature
 			} )
 		}
 
-		const digest		= Signature.jwkAlgToHash( algorithm ) || Signature.HashDigest
+		const digest = Signature.jwkAlgToHash( algorithm )
+
+		if ( ! digest ) {
+			// if an hash digest couldn't be found, means that an invalid `jwk` algorithm has been provided.
+			throw new Exception( 'Invalid JWK Algorithm name.', {
+				code: ErrorCode.Signature.INVALID_JWKNAME,
+			} )
+		}
+		
 		const signBuffer	= coerceToUint8Array( signature )
 		const dataBuffer	= coerceToUint8Array( data )
 

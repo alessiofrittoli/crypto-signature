@@ -2,6 +2,7 @@ import { ErrorCode as Exception } from '@alessiofrittoli/exception/code'
 
 export enum Signature
 {
+	INVALID_JWKNAME	= 'ERR:INVALIDJWKNAME',
 	INVALID_SIGN	= 'ERR:INVALIDSIGN',
 	NO_SIGN			= 'ERR:NOSIGN',
 	NO_PRIVATEKEY	= 'ERR:NOPRIVATEKEY',

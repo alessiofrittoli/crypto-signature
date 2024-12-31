@@ -18,27 +18,18 @@ describe( 'Signature.sign()', () => {
 	} )
 
 
-	it( 'supports CryptoKey', async () => {
-		const bytes		= 256
-		const keypair	= crypto.generateKeyPairSync( 'rsa', {
-			modulusLength		: bytes * 8,
-			publicKeyEncoding	: { type: 'spki', format: 'der' },
-			privateKeyEncoding	: { type: 'pkcs8', format: 'der' },
-		} )
-		
-		const privateKey = await (
-			crypto.subtle
-				.importKey(
-					'pkcs8', keypair.privateKey,
-					{ name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
-					true, [ 'sign' ]
-				)
-		)
+	it( 'thorws a new Exception if given algorithm JWK name is not supported', () => {
 
-		const signature = Signature.sign( data, privateKey, 'RS256' )
-		
-		expect( signature.toString( 'base64url' ) )
-			.toBeTruthy()
+		try {
+			// @ts-expect-error negative testing
+			Signature.sign( data, secretKey, 'INVALID' )
+		} catch ( error ) {
+			expect( error ).toBeInstanceOf( Exception )
+			if ( Exception.isException<string, ErrorCode>( error ) ) {
+				expect( error.code ).toBe( ErrorCode.Signature.INVALID_JWKNAME )
+			}
+		}
+
 	} )
 
 
@@ -49,6 +40,19 @@ describe( 'Signature.sign()', () => {
 			expect( error ).toBeInstanceOf( Exception )
 			if ( Exception.isException<string, ErrorCode>( error ) ) {
 				expect( error.code ).toBe( ErrorCode.Exception.EMPTY_VALUE )
+			}
+		}
+	} )
+
+
+	it( 'throws a new Exception when no Private Key has been given', () => {
+		try {
+			// @ts-expect-error negative testing
+			Signature.sign( data )
+		} catch ( error ) {
+			expect( error ).toBeInstanceOf( Exception )
+			if ( Exception.isException<string, ErrorCode>( error ) ) {
+				expect( error.code ).toBe( ErrorCode.Signature.NO_PRIVATEKEY )
 			}
 		}
 	} )
@@ -73,6 +77,22 @@ describe( 'Signature.sign()', () => {
 
 
 	describe( 'HMAC', () => {
+
+		it( 'creates a signature with HMAC CryptoKey', async () => {
+			const privateKey = await (
+				crypto.subtle
+					.importKey(
+						'raw', Buffer.from( secretKey ),
+						{ name: "HMAC", hash: { name: 'SHA-256' } },
+						true, [ 'sign' ]
+					)
+			)
+	
+			const signature = Signature.sign( data, privateKey, 'HS256' )
+			
+			expect( signature.toString( 'base64url' ) )
+				.toBeTruthy()
+		} )
 	
 		it( 'creates a signature with HS1', () => {
 			const signature = Signature.sign( data, secretKey, 'HS1' )
@@ -167,7 +187,31 @@ describe( 'Signature.sign()', () => {
 	describe( 'EcDSA', () => {
 	
 		const passphrase = 'my-private-key-optional-passphrase'
+
+
+		it( 'creates a signature with ec CryptoKey', async () => {
+			const keypair = crypto.generateKeyPairSync( 'ec', {
+				namedCurve			: 'P-256',
+				publicKeyEncoding	: { type: 'spki', format: 'pem' },
+				privateKeyEncoding	: { type: 'pkcs8', format: 'der' },
+			} )
+			
+			const privateKey = await (
+				crypto.subtle
+					.importKey(
+						'pkcs8', keypair.privateKey,
+						{ name: 'ECDSA', namedCurve: 'P-256' },
+						true, [ 'sign' ]
+					)
+			)
 	
+			const signature = Signature.sign( data, privateKey, 'ES256' )
+			
+			expect( signature.toString( 'base64url' ) )
+				.toBeTruthy()
+		} )
+
+
 		it( 'creates a signature with ES256', () => {
 			const keypair = crypto.generateKeyPairSync( 'ec', {
 				namedCurve			: 'secp256k1',
@@ -239,6 +283,28 @@ describe( 'Signature.sign()', () => {
 			expect( signature.length )
 				.toBeGreaterThan( 0 )
 		} )
+
+
+		it( 'creates a signature with ed448 CryptoKey', async () => {
+			const keypair = crypto.generateKeyPairSync( 'ed448', {
+				publicKeyEncoding	: { type: 'spki', format: 'pem' },
+				privateKeyEncoding	: { type: 'pkcs8', format: 'der' }
+			} )
+			
+			const privateKey = await (
+				crypto.subtle
+					.importKey(
+						'pkcs8', keypair.privateKey,
+						{ name: 'Ed448' },
+						true, [ 'sign' ]
+					)
+			)
+	
+			const signature = Signature.sign( data, privateKey, 'EdDSA' )
+			
+			expect( signature.toString( 'base64url' ) )
+				.toBeTruthy()
+		} )
 	
 	
 		it( 'creates a signature with ed25519', () => {
@@ -255,6 +321,28 @@ describe( 'Signature.sign()', () => {
 			expect( signature.length )
 				.toBeGreaterThan( 0 )
 		} )
+
+
+		it( 'creates a signature with ed25519 CryptoKey', async () => {
+			const keypair = crypto.generateKeyPairSync( 'ed25519', {
+				publicKeyEncoding	: { type: 'spki', format: 'pem' },
+				privateKeyEncoding	: { type: 'pkcs8', format: 'der' },
+			} )
+			
+			const privateKey = await (
+				crypto.subtle
+					.importKey(
+						'pkcs8', keypair.privateKey,
+						{ name: 'Ed25519' },
+						true, [ 'sign' ]
+					)
+			)
+	
+			const signature = Signature.sign( data, privateKey, 'EdDSA' )
+			
+			expect( signature.toString( 'base64url' ) )
+				.toBeTruthy()
+		} )
 	
 	} )
 	
@@ -268,8 +356,32 @@ describe( 'Signature.sign()', () => {
 			publicKeyEncoding	: { type: 'spki', format: 'pem' },
 			privateKeyEncoding	: { type: 'pkcs1', format: 'pem', passphrase, cipher: 'aes-256-cbc' },
 		} )
+
+
+		it( 'creates a signature with RSA CryptoKey', async () => {
+			const bytes		= 256
+			const keypair	= crypto.generateKeyPairSync( 'rsa', {
+				modulusLength		: bytes * 8,
+				publicKeyEncoding	: { type: 'spki', format: 'der' },
+				privateKeyEncoding	: { type: 'pkcs8', format: 'der' },
+			} )
+			
+			const privateKey = await (
+				crypto.subtle
+					.importKey(
+						'pkcs8', keypair.privateKey,
+						{ name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+						true, [ 'sign' ]
+					)
+			)
 	
-	
+			const signature = Signature.sign( data, privateKey, 'RS256' )
+			
+			expect( signature.toString( 'base64url' ) )
+				.toBeTruthy()
+		} )
+
+
 		it( 'creates a signature with RS1', () => {
 			const signature = Signature.sign( data, {
 				key			: keypair.privateKey,
@@ -320,8 +432,8 @@ describe( 'Signature.sign()', () => {
 	
 		const bytes			= 256
 		const passphrase	= 'my-private-key-optional-passphrase'
-	
-	
+
+
 		it( 'creates a signature with PS256', () => {
 	
 			const hash = 'SHA-256'
@@ -496,8 +608,15 @@ describe( 'Signature.isValid()', () => {
 
 
 	it( 'throws a new Exception when data has been altered', () => {
+		const keypair = crypto.generateKeyPairSync( 'ed448', {
+			publicKeyEncoding	: { type: 'spki', format: 'pem' },
+			privateKeyEncoding	: { type: 'pkcs8', format: 'pem' },
+		} )
+
+		const signature = Signature.sign( data, keypair.privateKey, 'EdDSA' )
+
 		try {
-			Signature.isValid( signature, 'altered data', secretKey )
+			Signature.isValid( signature, 'altered data', keypair.publicKey, 'EdDSA' )
 		} catch ( error ) {
 			expect( error ).toBeInstanceOf( Exception )
 			
@@ -509,8 +628,20 @@ describe( 'Signature.isValid()', () => {
 
 
 	it( 'throws a new Exception when using a wrong key', () => {
+		const keypair = crypto.generateKeyPairSync( 'rsa', {
+			modulusLength		: 256 * 8,
+			publicKeyEncoding	: { type: 'spki', format: 'pem' },
+			privateKeyEncoding	: { type: 'pkcs1', format: 'pem' },
+		} )
+		const keypair2 = crypto.generateKeyPairSync( 'rsa', {
+			modulusLength		: 256 * 8,
+			publicKeyEncoding	: { type: 'spki', format: 'pem' },
+			privateKeyEncoding	: { type: 'pkcs1', format: 'pem' },
+		} )
+		const signature = Signature.sign( data, keypair.privateKey, 'RS256' )
+
 		try {
-			Signature.isValid( signature, data, 'wrong secret key' )
+			Signature.isValid( signature, data, keypair2.publicKey, 'RS256' )
 		} catch ( error ) {
 			expect( error ).toBeInstanceOf( Exception )
 			
@@ -537,10 +668,43 @@ describe( 'Signature.isValid()', () => {
 		}
 
 	} )
+
+
+	it( 'thorws a new Exception if given algorithm JWK name is not supported', () => {
+
+		try {
+			// @ts-expect-error negative testing
+			Signature.isValid( Signature.sign( data, secretKey ), data, secretKey, 'INVALID' )
+		} catch ( error ) {
+			expect( error ).toBeInstanceOf( Exception )
+			if ( Exception.isException<string, ErrorCode>( error ) ) {
+				expect( error.code ).toBe( ErrorCode.Signature.INVALID_JWKNAME )
+			}
+		}
+
+	} )
 	
 	
 	describe( 'HMAC', () => {
+
+		it( 'verifies a signature with HMAC CryptoKey', async () => {
+			const secretCryptoKey = await (
+				crypto.subtle
+					.importKey(
+						'raw', Buffer.from( secretKey ),
+						{ name: "HMAC", hash: { name: 'SHA-256' } },
+						true, [ 'sign', 'verify' ]
+					)
+			)
 	
+			const signature = Signature.sign( data, secretCryptoKey, 'HS256' )
+			
+			expect(
+				Signature.isValid( signature, data, secretCryptoKey, 'HS256' )
+			).toBe( true )
+		} )
+
+
 		it( 'verifies a signature with HS1', () => {
 			const signature = Signature.sign( data, secretKey, 'HS1' )
 	
@@ -642,6 +806,37 @@ describe( 'Signature.isValid()', () => {
 	describe( 'EcDSA', () => {
 	
 		const passphrase = 'my-private-key-optional-passphrase'
+
+		it( 'verifies a signature with ec CryptoKey', async () => {
+			const keypair = crypto.generateKeyPairSync( 'ec', {
+				namedCurve			: 'P-256',
+				publicKeyEncoding	: { type: 'spki', format: 'der' },
+				privateKeyEncoding	: { type: 'pkcs8', format: 'der' },
+			} )
+			
+			const privateKey = await (
+				crypto.subtle
+					.importKey(
+						'pkcs8', keypair.privateKey,
+						{ name: 'ECDSA', namedCurve: 'P-256' },
+						true, [ 'sign' ]
+					)
+			)
+			const publicKey = await (
+				crypto.subtle
+					.importKey(
+						'spki', keypair.publicKey,
+						{ name: 'ECDSA', namedCurve: 'P-256' },
+						true, [ 'verify' ]
+					)
+			)
+	
+			const signature = Signature.sign( data, privateKey, 'ES256' )
+			
+			expect(
+				Signature.isValid( signature, data, publicKey, 'ES256' )
+			).toBe( true )
+		} )
 	
 		it( 'verifies a signature with ES256', () => {
 			const keypair = crypto.generateKeyPairSync( 'ec', {
@@ -718,6 +913,37 @@ describe( 'Signature.isValid()', () => {
 				Signature.isValid( signature, data, keypair.publicKey, 'EdDSA' )
 			).toBe( true )
 		} )
+
+		it( 'verifies a signature with ed448 CryptoKey', async () => {
+			const keypair = crypto.generateKeyPairSync( 'ed448', {
+				publicKeyEncoding	: { type: 'spki', format: 'der' },
+				privateKeyEncoding	: { type: 'pkcs8', format: 'der' }
+			} )
+			
+			const privateKey = await (
+				crypto.subtle
+					.importKey(
+						'pkcs8', keypair.privateKey,
+						{ name: 'Ed448' },
+						true, [ 'sign' ]
+					)
+			)
+
+			const publicKey = await (
+				crypto.subtle
+					.importKey(
+						'spki', keypair.publicKey,
+						{ name: 'Ed448' },
+						true, [ 'verify' ]
+					)
+			)
+	
+			const signature = Signature.sign( data, privateKey, 'EdDSA' )
+			
+			expect(
+				Signature.isValid( signature, data, publicKey, 'EdDSA' )
+			).toBe( true )
+		} )
 	
 	
 		it( 'verifies a signature with ed25519', () => {
@@ -737,6 +963,37 @@ describe( 'Signature.isValid()', () => {
 				Signature.isValid( signature, data, keypair.publicKey, 'EdDSA' )
 			).toBe( true )
 		} )
+
+		it( 'verifies a signature with ed25519 CryptoKey', async () => {
+			const keypair = crypto.generateKeyPairSync( 'ed25519', {
+				publicKeyEncoding	: { type: 'spki', format: 'der' },
+				privateKeyEncoding	: { type: 'pkcs8', format: 'der' },
+			} )
+			
+			const privateKey = await (
+				crypto.subtle
+					.importKey(
+						'pkcs8', keypair.privateKey,
+						{ name: 'Ed25519' },
+						true, [ 'sign' ]
+					)
+			)
+	
+			const publicKey = await (
+				crypto.subtle
+					.importKey(
+						'spki', keypair.publicKey,
+						{ name: 'Ed25519' },
+						true, [ 'verify' ]
+					)
+			)
+
+			const signature = Signature.sign( data, privateKey, 'EdDSA' )
+
+			expect(
+				Signature.isValid( signature, data, publicKey, 'EdDSA' )
+			).toBe( true )
+		} )
 	
 	} )
 	
@@ -749,6 +1006,40 @@ describe( 'Signature.isValid()', () => {
 			modulusLength		: bytes * 8,
 			publicKeyEncoding	: { type: 'spki', format: 'pem' },
 			privateKeyEncoding	: { type: 'pkcs1', format: 'pem', passphrase, cipher: 'aes-256-cbc' },
+		} )
+
+
+		it( 'verifies a signature with RSA CryptoKey', async () => {
+			const bytes		= 256
+			const keypair	= crypto.generateKeyPairSync( 'rsa', {
+				modulusLength		: bytes * 8,
+				publicKeyEncoding	: { type: 'spki', format: 'der' },
+				privateKeyEncoding	: { type: 'pkcs8', format: 'der' },
+			} )
+			
+			const privateKey = await (
+				crypto.subtle
+					.importKey(
+						'pkcs8', keypair.privateKey,
+						{ name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+						true, [ 'sign' ]
+					)
+			)
+
+			const publicKey = await (
+				crypto.subtle
+					.importKey(
+						'spki', keypair.publicKey,
+						{ name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+						true, [ 'verify' ]
+					)
+			)
+	
+			const signature = Signature.sign( data, privateKey, 'RS256' )
+			
+			expect(
+				Signature.isValid( signature, data, publicKey, 'RS256' )
+			).toBe( true )
 		} )
 	
 	
