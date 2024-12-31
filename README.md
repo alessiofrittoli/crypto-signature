@@ -2,6 +2,8 @@
 
 Version 1.3.1
 
+[![Coverage Status](https://coveralls.io/repos/github/alessiofrittoli/crypto-signature/badge.svg)](https://coveralls.io/github/alessiofrittoli/crypto-signature) [![Dependencies](https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fcrypto-signature)](https://libraries.io/npm/%40alessiofrittoli%2Fcrypto-signature)
+
 ## Lightweight TypeScript Signatures library
 
 This documentation provides an overview of the Digital Signature module and demonstrates how to use its methods for creating and verifying digital signatures.
@@ -48,10 +50,10 @@ pnpm i @alessiofrittoli/crypto-signature
 ##### Importing the Module
 
 ```ts
-import Signature from '@alessiofrittoli/crypto-signature'
+import { Signature } from '@alessiofrittoli/crypto-signature'
 import type { Sign } from '@alessiofrittoli/crypto-signature'
 // or
-import type Sign from '@alessiofrittoli/crypto-signature/types'
+import type { Sign } from '@alessiofrittoli/crypto-signature/types'
 ```
 
 ---
@@ -191,9 +193,9 @@ The `ErrorCode` enumerator can be used to handle different errors with ease.
 <summary>Example usage</summary>
 
 ```ts
-import Exception from '@alessiofrittoli/exception'
-import Signature from '@alessiofrittoli/crypto-signature'
-import ErrorCode from '@alessiofrittoli/crypto-signature/error'
+import { Exception } from '@alessiofrittoli/exception'
+import { Signature } from '@alessiofrittoli/crypto-signature'
+import { ErrorCode } from '@alessiofrittoli/crypto-signature/error'
 
 try {
 	Signature.isValid( 'invalid signature', 'Data', 'myscretkey' )
@@ -262,9 +264,7 @@ pnpm test:ci
 You can eventually run specific suits like so:
 
 ```bash
-pnpm test:jest
 pnpm test:signature
-pnpm test:verify
 ```
 
 Run tests with coverage.

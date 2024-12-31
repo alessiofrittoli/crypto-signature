@@ -30,6 +30,7 @@
 	],
 	"exports": {
 		".": {
+			"types": "./dist/index.d.ts",
 			"import": "./dist/index.mjs",
 			"require": "./dist/index.js"
 		},
@@ -47,25 +48,26 @@
 	"sideEffects": false,
 	"scripts": {
 		"build": "pnpm lint && pnpm test:ci && tsup",
+		"build:watch": "tsup --watch",
 		"lint": "eslint",
-		"test": "jest --watchAll --verbose",
-		"test:jsdom": "JSDOM=true pnpm test",
+		"release": "node scripts/publish.js --verbose --npm",
+		"test": "pnpm test:watch",
+		"test:watch": "jest --watchAll --verbose",
 		"test:ci": "jest --ci --verbose",
-		"test:ci:jsdom": "JSDOM=true pnpm test:ci",
+		"test:coverage": "pnpm test:watch --coverage",
+		"test:ci:coverage": "pnpm test:ci --coverage",
 		"test:serve-coverage": "http-server ./coverage/lcov-report --gzip true -p 0 -o --silent",
-		"test:coverage": "concurrently --prefix none --kill-others \"pnpm jest --watchAll --verbose --coverage\" \"pnpm test:serve-coverage\"",
-		"test:coverage:jsdom": "JSDOM=true pnpm test:coverage",
-		"test:jest": "pnpm test jest.test.ts",
-		"test:signature": "pnpm test signature.test.ts",
-		"test:verify": "pnpm test verify.test.ts",
-		"test:exception": "pnpm test exception.test.ts"
+		"test:coverage:serve": "concurrently --prefix none --kill-others \"pnpm test:coverage\" \"pnpm test:serve-coverage\"",
+		"test:jest": "pnpm test:watch jest.test.ts",
+		"test:signature": "pnpm test signature.test.ts"
 	},
 	"devDependencies": {
+		"@alessiofrittoli/node-scripts": "^2.2.1",
 		"@eslint/js": "^9.17.0",
 		"@jest/globals": "^29.7.0",
 		"@types/jest": "^29.5.14",
 		"@types/node": "^22.10.2",
-		"concurrently": "^9.1.0",
+		"concurrently": "^9.1.2",
 		"dotenv": "^16.4.7",
 		"eslint": "^9.17.0",
 		"globals": "^15.14.0",
@@ -76,13 +78,13 @@
 		"ts-node": "^10.9.2",
 		"tsup": "^8.3.5",
 		"typescript": "^5.7.2",
-		"typescript-eslint": "^8.18.1"
+		"typescript-eslint": "^8.19.0"
 	},
 	"dependencies": {
-		"@alessiofrittoli/crypto-algorithm": "^1.2.0",
-		"@alessiofrittoli/crypto-buffer": "^2.0.1",
-		"@alessiofrittoli/crypto-key": "^1.0.0",
-		"@alessiofrittoli/exception": "^1.2.0",
-		"@alessiofrittoli/type-utils": "^1.2.0"
+		"@alessiofrittoli/crypto-algorithm": "^2.0.0",
+		"@alessiofrittoli/crypto-buffer": "^3.2.0",
+		"@alessiofrittoli/crypto-key": "^2.0.0",
+		"@alessiofrittoli/exception": "^2.0.0",
+		"@alessiofrittoli/type-utils": "^1.5.0"
 	}
 }
