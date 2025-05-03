@@ -9,5 +9,5 @@ export enum Signature
 	NO_PUBLICKEY	= 'ERR:NOPUBLICKEY',
 }
 
-export const ErrorCode = { Exception, Signature }
+export const ErrorCode	= { Exception, Signature }
 export type ErrorCode	= MergedEnumValue<typeof ErrorCode>
