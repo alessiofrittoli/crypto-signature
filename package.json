@@ -1,6 +1,6 @@
 {
 	"name": "@alessiofrittoli/crypto-signature",
-	"version": "2.4.0",
+	"version": "2.5.0",
 	"description": "Lightweight TypeScript Signatures library",
 	"author": {
 		"name": "Alessio Frittoli",
