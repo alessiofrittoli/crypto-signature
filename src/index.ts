@@ -31,12 +31,12 @@ export class Signature
 	{
 		if ( ! data ) {
 			throw new Exception( 'No data to sign has been provided.', {
-				code: ErrorCode.Exception.EMPTY_VALUE,
+				code: ErrorCode.EMPTY_VALUE,
 			} )
 		}
 		if ( ! key ) {
 			throw new Exception( 'No Private Key has been provided.', {
-				code: ErrorCode.Signature.NO_PRIVATEKEY,
+				code: ErrorCode.NO_PRIVATEKEY,
 			} )
 		}
 
@@ -46,7 +46,7 @@ export class Signature
 		if ( ! digest ) {
 			// if an hash digest couldn't be found, means that an invalid `jwk` algorithm has been provided.
 			throw new Exception( 'Invalid JWK Algorithm name.', {
-				code: ErrorCode.Signature.INVALID_JWKNAME,
+				code: ErrorCode.INVALID_JWKNAME,
 			} )
 		}
 
@@ -86,7 +86,7 @@ export class Signature
 			
 		} catch ( error ) {
 			throw new Exception( 'An error occured while creating the signature.', {
-				code	: ErrorCode.Exception.UNKNOWN,
+				code	: ErrorCode.UNKNOWN,
 				cause	: error,
 			} )
 		}
@@ -112,17 +112,17 @@ export class Signature
 	{
 		if ( ! signature ) {
 			throw new Exception( 'No signature provided.', {
-				code: ErrorCode.Signature.NO_SIGN,
+				code: ErrorCode.NO_SIGN,
 			} )
 		}
 		if ( ! data ) {
 			throw new Exception( 'The signed data is needed for integrity controls.', {
-				code: ErrorCode.Exception.EMPTY_VALUE,
+				code: ErrorCode.EMPTY_VALUE,
 			} )
 		}
 		if ( ! key ) {
 			throw new Exception( 'No Public Key has been provided.', {
-				code: ErrorCode.Signature.NO_PUBLICKEY,
+				code: ErrorCode.NO_PUBLICKEY,
 			} )
 		}
 
@@ -131,7 +131,7 @@ export class Signature
 		if ( ! digest ) {
 			// if an hash digest couldn't be found, means that an invalid `jwk` algorithm has been provided.
 			throw new Exception( 'Invalid JWK Algorithm name.', {
-				code: ErrorCode.Signature.INVALID_JWKNAME,
+				code: ErrorCode.INVALID_JWKNAME,
 			} )
 		}
 		
@@ -148,7 +148,7 @@ export class Signature
 
 				if ( ! isValid ) {
 					throw new Exception( 'Invalid signature.', {
-						code: ErrorCode.Signature.INVALID_SIGN,
+						code: ErrorCode.INVALID_SIGN,
 					} )
 				}
 
@@ -164,7 +164,7 @@ export class Signature
 
 				if ( ! isValid ) {
 					throw new Exception( 'Invalid signature.', {
-						code: ErrorCode.Signature.INVALID_SIGN,
+						code: ErrorCode.INVALID_SIGN,
 					} )
 				}
 		
@@ -184,7 +184,7 @@ export class Signature
 
 			if ( ! isValid ) {
 				throw new Exception( 'Invalid signature.', {
-					code: ErrorCode.Signature.INVALID_SIGN,
+					code: ErrorCode.INVALID_SIGN,
 				} )
 			}
 
@@ -194,7 +194,7 @@ export class Signature
 				throw error
 			}
 			throw new Exception( 'An error occured while verifying the signature.', {
-				code	: ErrorCode.Exception.UNKNOWN,
+				code	: ErrorCode.UNKNOWN,
 				cause	: error,
 			} )
 		}

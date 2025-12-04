@@ -89,7 +89,7 @@
 		"test:coverage:serve": "concurrently --prefix none --kill-others \"pnpm test:coverage\" \"pnpm test:serve-coverage\""
 	},
 	"devDependencies": {
-		"@alessiofrittoli/node-scripts": "^3.2.0",
+		"@alessiofrittoli/node-scripts": "^3.3.0",
 		"@eslint/js": "^9.39.1",
 		"@jest/globals": "^30.2.0",
 		"@types/jest": "^30.0.0",
@@ -111,7 +111,6 @@
 		"@alessiofrittoli/crypto-algorithm": "^2.4.0",
 		"@alessiofrittoli/crypto-buffer": "^3.8.0",
 		"@alessiofrittoli/crypto-key": "^3.3.0",
-		"@alessiofrittoli/exception": "^3.3.1",
-		"@alessiofrittoli/type-utils": "^1.9.0"
+		"@alessiofrittoli/exception": "^3.5.0"
 	}
 }

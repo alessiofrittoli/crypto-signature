@@ -27,7 +27,7 @@ describe( 'Signature', () => {
 			} catch ( error ) {
 				expect( error ).toBeInstanceOf( Exception )
 				if ( Exception.isException<string, ErrorCode>( error ) ) {
-					expect( error.code ).toBe( ErrorCode.Signature.INVALID_JWKNAME )
+					expect( error.code ).toBe( ErrorCode.INVALID_JWKNAME )
 				}
 			}
 	
@@ -40,7 +40,7 @@ describe( 'Signature', () => {
 			} catch ( error ) {
 				expect( error ).toBeInstanceOf( Exception )
 				if ( Exception.isException<string, ErrorCode>( error ) ) {
-					expect( error.code ).toBe( ErrorCode.Exception.EMPTY_VALUE )
+					expect( error.code ).toBe( ErrorCode.EMPTY_VALUE )
 				}
 			}
 		} )
@@ -53,7 +53,7 @@ describe( 'Signature', () => {
 			} catch ( error ) {
 				expect( error ).toBeInstanceOf( Exception )
 				if ( Exception.isException<string, ErrorCode>( error ) ) {
-					expect( error.code ).toBe( ErrorCode.Signature.NO_PRIVATEKEY )
+					expect( error.code ).toBe( ErrorCode.NO_PRIVATEKEY )
 				}
 			}
 		} )
@@ -67,7 +67,7 @@ describe( 'Signature', () => {
 				expect( error ).toBeInstanceOf( Exception )
 	
 				if ( Exception.isException<string, ErrorCode>( error ) ) {
-					expect( error.code ).toBe( ErrorCode.Exception.UNKNOWN )
+					expect( error.code ).toBe( ErrorCode.UNKNOWN )
 					expect( 'cause' in error ).toBe( true )
 					const cause = error.cause as Error
 					expect( cause.name ).toBe( 'Error' )
@@ -87,7 +87,7 @@ describe( 'Signature', () => {
 							{ name: "HMAC", hash: { name: 'SHA-256' } },
 							true, [ 'sign' ]
 						)
-				)
+				) as CryptoKey
 		
 				const signature = Signature.sign( data, privateKey, 'HS256' )
 				
@@ -204,7 +204,7 @@ describe( 'Signature', () => {
 							{ name: 'ECDSA', namedCurve: 'P-256' },
 							true, [ 'sign' ]
 						)
-				)
+				) as CryptoKey
 		
 				const signature = Signature.sign( data, privateKey, 'ES256' )
 				
@@ -299,7 +299,7 @@ describe( 'Signature', () => {
 							{ name: 'Ed448' },
 							true, [ 'sign' ]
 						)
-				)
+				) as CryptoKey
 		
 				const signature = Signature.sign( data, privateKey, 'EdDSA' )
 				
@@ -337,7 +337,7 @@ describe( 'Signature', () => {
 							{ name: 'Ed25519' },
 							true, [ 'sign' ]
 						)
-				)
+				) as CryptoKey
 		
 				const signature = Signature.sign( data, privateKey, 'EdDSA' )
 				
@@ -374,7 +374,7 @@ describe( 'Signature', () => {
 							{ name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
 							true, [ 'sign' ]
 						)
-				)
+				) as CryptoKey
 		
 				const signature = Signature.sign( data, privateKey, 'RS256' )
 				
@@ -536,7 +536,7 @@ describe( 'Signature', () => {
 						{ name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
 						true, [ 'sign' ]
 					)
-			)
+			) as CryptoKey
 	
 			const publicKey = await (
 				crypto.subtle
@@ -545,7 +545,7 @@ describe( 'Signature', () => {
 						{ name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
 						true, [ 'verify' ]
 					)
-			)
+			) as CryptoKey
 	
 			const signature = Signature.sign( data, privateKey, 'RS256' )
 			
@@ -563,7 +563,7 @@ describe( 'Signature', () => {
 				expect( error ).toBeInstanceOf( Exception )
 				
 				if ( Exception.isException<string, ErrorCode>( error ) ) {
-					expect( error.code ).toBe( ErrorCode.Signature.NO_SIGN )
+					expect( error.code ).toBe( ErrorCode.NO_SIGN )
 				}
 			}
 		} )
@@ -576,7 +576,7 @@ describe( 'Signature', () => {
 				expect( error ).toBeInstanceOf( Exception )
 				
 				if ( Exception.isException<string, ErrorCode>( error ) ) {
-					expect( error.code ).toBe( ErrorCode.Exception.EMPTY_VALUE )
+					expect( error.code ).toBe( ErrorCode.EMPTY_VALUE )
 				}
 			}
 		} )
@@ -589,7 +589,7 @@ describe( 'Signature', () => {
 				expect( error ).toBeInstanceOf( Exception )
 				
 				if ( Exception.isException<string, ErrorCode>( error ) ) {
-					expect( error.code ).toBe( ErrorCode.Signature.NO_PUBLICKEY )
+					expect( error.code ).toBe( ErrorCode.NO_PUBLICKEY )
 				}
 			}
 		} )
@@ -602,7 +602,7 @@ describe( 'Signature', () => {
 				expect( error ).toBeInstanceOf( Exception )
 				
 				if ( Exception.isException<string, ErrorCode>( error ) ) {
-					expect( error.code ).toBe( ErrorCode.Signature.INVALID_SIGN )
+					expect( error.code ).toBe( ErrorCode.INVALID_SIGN )
 				}
 			}
 		} )
@@ -622,7 +622,7 @@ describe( 'Signature', () => {
 				expect( error ).toBeInstanceOf( Exception )
 				
 				if ( Exception.isException<string, ErrorCode>( error ) ) {
-					expect( error.code ).toBe( ErrorCode.Signature.INVALID_SIGN )
+					expect( error.code ).toBe( ErrorCode.INVALID_SIGN )
 				}
 			}
 		} )
@@ -647,7 +647,7 @@ describe( 'Signature', () => {
 				expect( error ).toBeInstanceOf( Exception )
 				
 				if ( Exception.isException<string, ErrorCode>( error ) ) {
-					expect( error.code ).toBe( ErrorCode.Signature.INVALID_SIGN )
+					expect( error.code ).toBe( ErrorCode.INVALID_SIGN )
 				}
 			}
 		} )
@@ -661,7 +661,7 @@ describe( 'Signature', () => {
 				expect( error ).toBeInstanceOf( Exception )
 	
 				if ( Exception.isException<string, ErrorCode>( error ) ) {
-					expect( error.code ).toBe( ErrorCode.Exception.UNKNOWN )
+					expect( error.code ).toBe( ErrorCode.UNKNOWN )
 					expect( 'cause' in error ).toBe( true )
 					const cause = error.cause as Error
 					expect( cause.name ).toBe( 'Error' )
@@ -679,7 +679,7 @@ describe( 'Signature', () => {
 			} catch ( error ) {
 				expect( error ).toBeInstanceOf( Exception )
 				if ( Exception.isException<string, ErrorCode>( error ) ) {
-					expect( error.code ).toBe( ErrorCode.Signature.INVALID_JWKNAME )
+					expect( error.code ).toBe( ErrorCode.INVALID_JWKNAME )
 				}
 			}
 	
@@ -696,7 +696,7 @@ describe( 'Signature', () => {
 							{ name: "HMAC", hash: { name: 'SHA-256' } },
 							true, [ 'sign', 'verify' ]
 						)
-				)
+				) as CryptoKey
 		
 				const signature = Signature.sign( data, secretCryptoKey, 'HS256' )
 				
@@ -822,7 +822,8 @@ describe( 'Signature', () => {
 							{ name: 'ECDSA', namedCurve: 'P-256' },
 							true, [ 'sign' ]
 						)
-				)
+				) as CryptoKey
+
 				const publicKey = await (
 					crypto.subtle
 						.importKey(
@@ -830,7 +831,7 @@ describe( 'Signature', () => {
 							{ name: 'ECDSA', namedCurve: 'P-256' },
 							true, [ 'verify' ]
 						)
-				)
+				) as CryptoKey
 		
 				const signature = Signature.sign( data, privateKey, 'ES256' )
 				
@@ -928,7 +929,7 @@ describe( 'Signature', () => {
 							{ name: 'Ed448' },
 							true, [ 'sign' ]
 						)
-				)
+				) as CryptoKey
 	
 				const publicKey = await (
 					crypto.subtle
@@ -937,7 +938,7 @@ describe( 'Signature', () => {
 							{ name: 'Ed448' },
 							true, [ 'verify' ]
 						)
-				)
+				) as CryptoKey
 		
 				const signature = Signature.sign( data, privateKey, 'EdDSA' )
 				
@@ -978,7 +979,7 @@ describe( 'Signature', () => {
 							{ name: 'Ed25519' },
 							true, [ 'sign' ]
 						)
-				)
+				) as CryptoKey
 		
 				const publicKey = await (
 					crypto.subtle
@@ -987,7 +988,7 @@ describe( 'Signature', () => {
 							{ name: 'Ed25519' },
 							true, [ 'verify' ]
 						)
-				)
+				) as CryptoKey
 	
 				const signature = Signature.sign( data, privateKey, 'EdDSA' )
 	
@@ -1025,7 +1026,7 @@ describe( 'Signature', () => {
 							{ name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
 							true, [ 'sign' ]
 						)
-				)
+				) as CryptoKey
 	
 				const publicKey = await (
 					crypto.subtle
@@ -1034,7 +1035,7 @@ describe( 'Signature', () => {
 							{ name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
 							true, [ 'verify' ]
 						)
-				)
+				) as CryptoKey
 		
 				const signature = Signature.sign( data, privateKey, 'RS256' )
 				
