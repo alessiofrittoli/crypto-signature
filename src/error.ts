@@ -1,6 +1,6 @@
 import { ErrorCode as Exception } from '@alessiofrittoli/exception/code'
 
-export const Signature = {
+const Signature = {
 	INVALID_JWKNAME	: 'ERR:INVALIDJWKNAME',
 	INVALID_SIGN	: 'ERR:INVALIDSIGN',
 	NO_SIGN			: 'ERR:NOSIGN',
@@ -8,5 +8,5 @@ export const Signature = {
 	NO_PUBLICKEY	: 'ERR:NOPUBLICKEY',
 } as const
 
-export const ErrorCode	= { ...Exception, ...Signature } as const
+export const ErrorCode	= { ...Exception, ...Signature }
 export type ErrorCode = typeof ErrorCode[ keyof typeof ErrorCode ]
