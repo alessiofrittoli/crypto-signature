@@ -1,43 +1,69 @@
-# Crypto Signature 🔏
+<h1 align="center">Crypto Signature 🔏</h1>
+<p align="center">
+  Lightweight TypeScript Signatures library
+</p>
+<p align="center">
+The module supports multiple algorithms for signing and verifying data, including HMAC, RSA, RSASSA-PSS, DSA, EcDSA and EdDSA. It provides a synchronous interface for cryptographic operations using Node.js's crypto module and custom utility classes.
+</p>
+<p align="center">
+This documentation covers the essential functionality of the module, allowing users to securely sign and verify data using various cryptographic algorithms.
+</p>
+<p align="center">
+  <a href="https://npmjs.org/package/@alessiofrittoli/crypto-signature">
+    <img src="https://img.shields.io/npm/v/@alessiofrittoli/crypto-signature" alt="Latest version"/>
+  </a>
+  <a href="https://coveralls.io/github/alessiofrittoli/crypto-signature">
+    <img src="https://coveralls.io/repos/github/alessiofrittoli/crypto-signature/badge.svg" alt="Test coverage"/>
+  </a>
+  <a href="https://socket.dev/npm/package/@alessiofrittoli/crypto-signature/overview">
+    <img src="https://socket.dev/api/badge/npm/package/@alessiofrittoli/crypto-signature" alt="Socket Security score"/>
+  </a>
+  <a href="https://npmjs.org/package/@alessiofrittoli/crypto-signature">
+    <img src="https://img.shields.io/npm/dm/@alessiofrittoli/crypto-signature.svg" alt="npm downloads"/>
+  </a>
+  <a href="https://bundlephobia.com/package/@alessiofrittoli/crypto-signature">
+    <img src="https://badgen.net/bundlephobia/dependency-count/@alessiofrittoli/crypto-signature" alt="Dependencies"/>
+  </a>
+  <a href="https://libraries.io/npm/%40alessiofrittoli%2Fcrypto-signature">
+    <img src="https://img.shields.io/librariesio/release/npm/@alessiofrittoli/crypto-signature" alt="Dependencies status"/>
+  </a>
+</p>
+<p align="center">
+  <a href="https://bundlephobia.com/package/@alessiofrittoli/crypto-signature">
+    <img src="https://badgen.net/bundlephobia/min/@alessiofrittoli/crypto-signature" alt="minified"/>
+  </a>
+  <a href="https://bundlephobia.com/package/@alessiofrittoli/crypto-signature">
+    <img src="https://badgen.net/bundlephobia/minzip/@alessiofrittoli/crypto-signature" alt="minizipped"/>
+  </a>
+  <a href="https://bundlephobia.com/package/@alessiofrittoli/crypto-signature">
+    <img src="https://badgen.net/bundlephobia/tree-shaking/@alessiofrittoli/crypto-signature" alt="Tree shakable"/>
+  </a>
+</p>
+<p align="center">
+  <a href="https://github.com/sponsors/alessiofrittoli">
+    <img src="https://img.shields.io/static/v1?label=Fund%20this%20package&message=%E2%9D%A4&logo=GitHub&color=%23DB61A2" alt="Fund this package"/>
+  </a>
+</p>
 
-[![NPM Latest Version][version-badge]][npm-url] [![Coverage Status][coverage-badge]][coverage-url] [![Socket Status][socket-badge]][socket-url] [![NPM Monthly Downloads][downloads-badge]][npm-url] [![Dependencies][deps-badge]][deps-url]
-
-[![GitHub Sponsor][sponsor-badge]][sponsor-url]
-
-[version-badge]: https://img.shields.io/npm/v/%40alessiofrittoli%2Fcrypto-signature
-[npm-url]: https://npmjs.org/package/%40alessiofrittoli%2Fcrypto-signature
-[coverage-badge]: https://coveralls.io/repos/github/alessiofrittoli/crypto-signature/badge.svg
-[coverage-url]: https://coveralls.io/github/alessiofrittoli/crypto-signature
-[socket-badge]: https://socket.dev/api/badge/npm/package/@alessiofrittoli/crypto-signature
-[socket-url]: https://socket.dev/npm/package/@alessiofrittoli/crypto-signature/overview
-[downloads-badge]: https://img.shields.io/npm/dm/%40alessiofrittoli%2Fcrypto-signature.svg
-[deps-badge]: https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fcrypto-signature
-[deps-url]: https://libraries.io/npm/%40alessiofrittoli%2Fcrypto-signature
 [sponsor-badge]: https://img.shields.io/static/v1?label=Fund%20this%20package&message=%E2%9D%A4&logo=GitHub&color=%23DB61A2
 [sponsor-url]: https://github.com/sponsors/alessiofrittoli
-
-## Lightweight TypeScript Signatures library
-
-This documentation provides an overview of the Digital Signature module and demonstrates how to use its methods for creating and verifying digital signatures.
 
 ### Table of Contents
 
 - [Getting started](#getting-started)
-  - [Usage](#usage)
+- [Development](#development)
+  - [Local development](#local-development)
+  - [Production build](#production-build)
+  - [Unit tests](#unit-tests)
+    - [Run tests with coverage](#run-tests-with-coverage)
+  - [Contributing](#contributing)
+  - [Security](#security)
+- [Usage](#usage)
   - [Creating a Digital Signature](#creating-a-digital-signature)
   - [Verifying a Digital Signature](#verifying-a-digital-signature)
   - [Supported Algorithms](#supported-algorithms)
   - [Error Handling](#error-handling)
-- [Development](#development)
-  - [ESLint](#eslint)
-  - [Jest](#jest)
-- [Contributing](#contributing)
-- [Security](#security)
 - [Credits](#made-with-)
-
-### Overview
-
-The module supports multiple algorithms for signing and verifying data, including HMAC, RSA, RSASSA-PSS, DSA, EcDSA and EdDSA. It provides a synchronous interface for cryptographic operations using Node.js's crypto module and custom utility classes.
 
 ---
 
@@ -57,15 +83,101 @@ pnpm i @alessiofrittoli/crypto-signature
 
 ---
 
+### Development
+
+Run the following to start development
+
+```shell
+nvm use
+
+pnpm i
+```
+
+#### Local development
+
+Run the following
+
+```shell
+pnpm dev
+```
+
+This will generate unminified output code, sourcemaps and will enable source file watcher.
+
+---
+
+#### Production build
+
+Run the following to create a local production build
+
+```shell
+pnpm build
+```
+
+This will generate minified output code without sourcemaps.
+
+---
+
+#### Unit tests
+
+Run all the defined test suites by running the following:
+
+```shell
+# Run tests and watch file changes.
+pnpm test:watch
+
+# Run tests in a CI environment.
+pnpm test:ci
+```
+
+---
+
+##### Run tests with coverage
+
+An HTTP server is then started to serve coverage files from `./coverage` folder.
+
+⚠️ You may see a blank page the first time you run this command. Simply refresh the browser to see the updates.
+
+```shell
+pnpm test:coverage:serve
+```
+
+---
+
+#### Contributing
+
+Contributions are truly welcome!
+
+Please refer to the [Contributing Doc](./CONTRIBUTING.md) for more information on how to start contributing to this project.
+
+Help keep this project up to date with [GitHub Sponsor][sponsor-url].
+
+[![GitHub Sponsor][sponsor-badge]][sponsor-url]
+
+---
+
+#### Security
+
+If you believe you have found a security vulnerability, we encourage you to **_responsibly disclose this and NOT open a public issue_**. We will investigate all legitimate reports. Email `security@alessiofrittoli.it` to disclose any security vulnerabilities.
+
+---
+
 #### Usage
+
+> [!WARNING]
+>
+> Requires the following packages to be installed:
+>
+> - [`@alessiofrittoli/crypto-buffer`](https://npmjs.com/package/@alessiofrittoli/crypto-buffer)
+> - [`@alessiofrittoli/crypto-algorithm`](https://npmjs.com/package/@alessiofrittoli/crypto-algorithm)
+> - [`@alessiofrittoli/crypto-key`](https://npmjs.com/package/@alessiofrittoli/crypto-key)
+> - [`@alessiofrittoli/exception`](https://npmjs.com/package/@alessiofrittoli/exception)
 
 ##### Importing the Module
 
 ```ts
-import { Signature } from "@alessiofrittoli/crypto-signature";
-import type { Sign } from "@alessiofrittoli/crypto-signature";
-// or
-import type { Sign } from "@alessiofrittoli/crypto-signature/types";
+import type { Sign } from '@alessiofrittoli/crypto-signature/types'
+import { ErrorCode } from '@alessiofrittoli/crypto-signature/error'
+import { Signature } from '@alessiofrittoli/crypto-signature'
 ```
 
 ---
@@ -91,15 +203,15 @@ The generated signature Node.js Buffer.
 ##### Example
 
 ```ts
-const data = "This is the data to sign";
-const key = crypto.createSecretKey(Buffer.from("your-secret-key"));
-const algorithm = "HS256";
+const data = 'This is the data to sign'
+const key = crypto.createSecretKey(Buffer.from('your-secret-key'))
+const algorithm = 'HS256'
 
 try {
-  const signature = Signature.sign(data, key, algorithm);
-  console.log("Generated Signature:", signature.toString("hex"));
+  const signature = Signature.sign(data, key, algorithm)
+  console.log('Generated Signature:', signature.toString('hex'))
 } catch (error) {
-  console.error("Error generating signature:", error);
+  console.error('Error generating signature:', error)
 }
 ```
 
@@ -125,16 +237,16 @@ Returns `true` if the signature is valid. Throws an exception otherwise.
 ##### Example
 
 ```ts
-const signature = Buffer.from("signature-in-hex", "hex");
-const data = "This is the data to verify";
-const key = crypto.createSecretKey(Buffer.from("your-secret-key"));
-const algorithm = "HS256";
+const signature = Buffer.from('signature-in-hex', 'hex')
+const data = 'This is the data to verify'
+const key = crypto.createSecretKey(Buffer.from('your-secret-key'))
+const algorithm = 'HS256'
 
 try {
-  const isValid = Signature.isValid(signature, data, key, algorithm);
-  console.log("Signature is valid:", isValid);
+  const isValid = Signature.isValid(signature, data, key, algorithm)
+  console.log('Signature is valid:', isValid)
 } catch (error) {
-  console.error("Error verifying signature:", error);
+  console.error('Error verifying signature:', error)
 }
 ```
 
@@ -183,18 +295,21 @@ The `ErrorCode` enumerator can be used to handle different errors with ease.
 
 <summary>`ErrorCode` enum</summary>
 
-| Constant        | Description                                                                                                                                                                                            |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `UNKNOWN`       | Thrown when:                                                                                                                                                                                           |
-|                 | - `Signature.sign()` encounters an unexpected error while creating a signature (mostly due to unsupported routine). The original thrown error is being reported in the `Exception.cause` property.     |
-|                 | - `Signature.isValid()` encounters an unexpected error while verifying a signature (mostly due to unsupported routine). The original thrown error is being reported in the `Exception.cause` property. |
-| `EMPTY_VALUE`   | Thrown when:                                                                                                                                                                                           |
-|                 | `Signature.sign()` has no `data` to sign.                                                                                                                                                              |
-|                 | `Signature.isValid()` has no `data` to verify.                                                                                                                                                         |
-| `INVALID_SIGN`  | Thrown when `Signature.isValid()` encounter an invalid signature (altered data, altered signature, wrong PublicKey).                                                                                   |
-| `NO_SIGN`       | Thrown when `Signature.isValid()` has no `signature` to verify.                                                                                                                                        |
-| `NO_PRIVATEKEY` | Thrown when `Signature.sign()` has no Private Key to sign with.                                                                                                                                        |
-| `NO_PUBLICKEY`  | Thrown when `Signature.isValid()` has no Public Key to verify the signature with.                                                                                                                      |
+| Constant          | Description                                                                                                                                                                                            |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `UNKNOWN`         | Thrown when:                                                                                                                                                                                           |
+|                   | - `Signature.sign()` encounters an unexpected error while creating a signature (mostly due to unsupported routine). The original thrown error is being reported in the `Exception.cause` property.     |
+|                   | - `Signature.isValid()` encounters an unexpected error while verifying a signature (mostly due to unsupported routine). The original thrown error is being reported in the `Exception.cause` property. |
+| `EMPTY_VALUE`     | Thrown when:                                                                                                                                                                                           |
+|                   | `Signature.sign()` has no `data` to sign.                                                                                                                                                              |
+|                   | `Signature.isValid()` has no `data` to verify.                                                                                                                                                         |
+| `INVALID_SIGN`    | Thrown when `Signature.isValid()` encounter an invalid signature (altered data, altered signature, wrong PublicKey).                                                                                   |
+| `NO_SIGN`         | Thrown when `Signature.isValid()` has no `signature` to verify.                                                                                                                                        |
+| `NO_PRIVATEKEY`   | Thrown when `Signature.sign()` has no Private Key to sign with.                                                                                                                                        |
+| `NO_PUBLICKEY`    | Thrown when `Signature.isValid()` has no Public Key to verify the signature with.                                                                                                                      |
+| `INVALID_JWKNAME` | Thrown when:                                                                                                                                                                                           |
+|                   | `Signature.sign()` didn't find any valid hash digest algorithm based on the given algorithm name.                                                                                                      |
+|                   | `Signature.isValid()` didn't find any valid hash digest algorithm based on the given algorithm name.                                                                                                   |
 
 </details>
 
@@ -205,16 +320,16 @@ The `ErrorCode` enumerator can be used to handle different errors with ease.
 <summary>Example usage</summary>
 
 ```ts
-import { Exception } from "@alessiofrittoli/exception";
-import { Signature } from "@alessiofrittoli/crypto-signature";
-import { ErrorCode } from "@alessiofrittoli/crypto-signature/error";
+import { ErrorCode } from '@alessiofrittoli/crypto-signature/error'
+import { Signature } from '@alessiofrittoli/crypto-signature'
+import { Exception } from '@alessiofrittoli/exception'
 
 try {
-  Signature.isValid("invalid signature", "Data", "myscretkey");
+  Signature.isValid('invalid signature', 'Data', 'myscretkey')
 } catch (error) {
-  console.log(error);
+  console.log(error)
   // safe type guard the `error` variable.
-  if (Exception.isException<string, ErrorCode>(error)) {
+  if (Exception.isException<ErrorCode>(error)) {
     // ... do somethign with `error.code`
     if (error.code === ErrorCode.INVALID_SIGN) {
       // ...
@@ -226,82 +341,6 @@ try {
 </details>
 
 ---
-
-This documentation covers the essential functionality of the module, allowing users to securely sign and verify data using various cryptographic algorithms.
-
----
-
-### Development
-
-#### Install depenendencies
-
-```bash
-npm install
-```
-
-or using `pnpm`
-
-```bash
-pnpm i
-```
-
-#### Build the source code
-
-Run the following command to test and build code for distribution.
-
-```bash
-pnpm build
-```
-
-#### [ESLint](https://www.npmjs.com/package/eslint)
-
-warnings / errors check.
-
-```bash
-pnpm lint
-```
-
-#### [Jest](https://npmjs.com/package/jest)
-
-Run all the defined test suites by running the following:
-
-```bash
-# Run tests and watch file changes.
-pnpm test:watch
-
-# Run tests in a CI environment.
-pnpm test:ci
-```
-
-- See [`package.json`](./package.json) file scripts for more info.
-
-Run tests with coverage.
-
-An HTTP server is then started to serve coverage files from `./coverage` folder.
-
-⚠️ You may see a blank page the first time you run this command. Simply refresh the browser to see the updates.
-
-```bash
-test:coverage:serve
-```
-
----
-
-### Contributing
-
-Contributions are truly welcome!
-
-Please refer to the [Contributing Doc](./CONTRIBUTING.md) for more information on how to start contributing to this project.
-
-Help keep this project up to date with [GitHub Sponsor][sponsor-url].
-
-[![GitHub Sponsor][sponsor-badge]][sponsor-url]
-
----
-
-### Security
-
-If you believe you have found a security vulnerability, we encourage you to **_responsibly disclose this and NOT open a public issue_**. We will investigate all legitimate reports. Email `security@alessiofrittoli.it` to disclose any security vulnerabilities.
 
 ### Made with ☕
 
